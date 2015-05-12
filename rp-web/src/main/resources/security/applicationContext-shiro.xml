@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro安全配置</description>
+
+	<!-- Shiro's main business-tier object for web-enabled applications -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="shiroDbRealm" />
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+		<!-- 项目一直报错Given final block not properly padded 自定义了rememberMeManager解决  -->
+		<property name="rememberMeManager" ref="rememberMeManager"></property>
+	</bean>  
+	
+	<!-- manager -->
+	<!--  -->
+    <!-- Remembered vs Authenticated http://www.ituring.com.cn/article/287 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <!-- rememberme cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
+        <property name="cipherKey"
+                  value="#{T(org.apache.shiro.codec.Base64).decode('${shiro.uid.rememeberMe.cookie.base64.cipherKey}')}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+    
+     <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="${shiro.uid.rememeberMe.cookie.name}"/>
+        <property name="httpOnly" value="${shiro.uid.cookie.httpOnly}"/>
+        <property name="maxAge" value="${shiro.uid.rememeberMe.cookie.maxAge}"/>
+    </bean>
+    
+	<!-- 項目自定义的Realm -->
+	 <bean id="shiroDbRealm" class="com.huang.rp.web.sys.rbac.authentication.ShiroDbRealm">
+	</bean> 
+	
+	<!-- default SessionManager -->
+	<bean id="sessionManager"
+		class="org.apache.shiro.web.session.mgt.ServletContainerSessionManager"></bean>
+		
+	<!-- 并发登录人数控制 -->
+	<bean id="kickoutSessionControlFilter"
+		class="com.huang.rp.web.sys.rbac.authentication.KickoutSessionControlFilter">
+		<property name="cacheManager" ref="shiroEhcacheManager" />
+		<property name="sessionManager" ref="sessionManager" />
+
+		<property name="kickoutAfter" value="false" />
+		<property name="maxSession" value="2" /><!-- 最大会话数 -->
+		<property name="kickoutUrl" value="/login" />
+	</bean>
+	
+	<bean id="authcFilter" class="com.huang.rp.web.sys.rbac.authentication.MyFormAuthenticationFilter"></bean>
+	<!-- Shiro Filter -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/" />
+		<property name="filters">
+			<util:map>
+				<entry key="authc" value-ref="authcFilter"> <!-- 自己实现的formAuthcFilter，加入key type -->
+				</entry>
+				<entry key="kickout" value-ref="kickoutSessionControlFilter" />
+				<entry key="user">
+					<bean class="com.huang.rp.web.sys.rbac.authentication.MyUserFliter"></bean>
+				</entry>
+			
+		   </util:map>
+		</property>
+		<property name="filterChainDefinitions">
+			<value>
+				/static/** = anon
+				/regist = anon
+				/login=authc
+				/logout = logout
+				/** = user
+			</value>
+		</property>
+	</bean>
+
+	<!-- 用户授权信息Cache, 采用EhCache -->
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManagerConfigFile" value="classpath:security/ehcache-shiro.xml"/>
+	</bean>
+	
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	<!-- AOP式方法级权限检查  -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"/>
+	</bean>
+</beans>

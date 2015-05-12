@@ -1,0 +1,2 @@
+<script type="text/javascript" src="${ctx }/static/js/constant.js"></script>
+<script type="text/javascript" src="${ctx }/static/js/require.js"></script>

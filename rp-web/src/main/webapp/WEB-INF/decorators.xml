@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/index/">
+	<excludes>
+		<pattern>/static/*</pattern>
+	</excludes>   
+	
+	<!-- 工作台 -->
+	<!--  
+	<decorator name="portal" page="index.jsp">
+		<pattern>/article1*</pattern>    
+	</decorator>
+	-->
+</decorators>

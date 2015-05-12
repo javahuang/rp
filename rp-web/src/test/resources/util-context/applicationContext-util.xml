@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+
+	xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+	<description>util标签配置</description>
+	<alias name="util" alias="org.springframework.test.UtilTagTest" />
+
+	<util:properties id="testConfig"
+		location="classpath:util-context/util-test.properties" />
+	<!--  和上面这种方式等价
+	<bean id="jdbcConfiguration" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+    	<property name="location" value="classpath:util-context/util-test.properties"/>
+	</bean>
+	-->
+	
+	<!-- <property name="email" value="#{emails[1]}"/> -->
+	<util:list id="emailsList" list-class="java.util.LinkedList">
+		<value>jackshaftoe@vagabond.org</value>
+		<value>eliza@thinkingmanscrumpet.org</value>
+		<value>vanhoek@pirate.org</value>
+		<value>d'Arcachon@nemesis.org</value>
+	</util:list>
+
+	<util:map id="emailsMap" map-class="java.util.TreeMap">
+		<entry key="pechorin" value="pechorin@hero.org" />
+		<entry key="raskolnikov" value="raskolnikov@slums.org" />
+		<entry key="stavrogin" value="stavrogin@gov.org" />
+		<entry key="porfiry" value="porfiry@gov.org" />
+	</util:map>
+
+
+
+	<!-- 在xml或者@Value注解中通过 ${}引用 PropertyPlaceholderConfigurer -->
+	<context:property-placeholder
+		ignore-unresolvable="true" local-override="true"
+		location="classpath:util-context/util-test.properties" />
+	<!--上面和下面两种配置方式等价-->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:util-context/util-test.properties</value>
+			</list>
+		</property>
+	</bean>
+</beans>

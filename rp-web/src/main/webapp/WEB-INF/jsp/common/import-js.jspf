@@ -1,0 +1,33 @@
+<script type="text/javascript" src="${ctx }/static/js/constant.js"></script>
+<script type="text/javascript" src="${ctx }/static/js/require.js"></script>
+<script type="text/javascript">
+	require.config({
+		baseUrl : '${ctx}/static',//默认是加载requirejs页面的位置
+		paths : {
+			'app' : 'js/application',
+			'jquery' : 'js/jquery-1.10.1.min',//后面不能带后缀
+			'j-u-b' : 'comp/jquery-ui-bootstrap/js',
+			"bootstrap" : "comp/bootstrap/js/bootstrap",
+			"jqlayout":'comp/jquery-ui-bootstrap/js/jquery.layout-latest',
+			"index":'js/index',
+			"jqueryplugin":'js/jqueryplugin',
+			'jqueryui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui'
+		},
+		waitSeconds : 15,
+		map : {
+			'*' : {
+				'css' : 'js/css',
+				'constant' : 'js/constant'
+			}
+		},
+		shim : {
+			"bootstrap" : {
+				"deps" : [ 'jquery' ]
+			},
+			"jqlayout":{
+				"deps" : [ 'jquery' ]
+			}
+		//'app': ['css! css/test.css']
+		}
+	})
+</script>

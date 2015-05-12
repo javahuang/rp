@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huang.rp.web.blog.dao.BlogPostsMapper" >
+  <resultMap id="BaseResultMap" type="com.huang.rp.web.blog.domain.BlogPosts" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="post_author" property="postAuthor" jdbcType="BIGINT" />
+    <result column="post_date" property="postDate" jdbcType="TIMESTAMP" />
+    <result column="post_date_gmt" property="postDateGmt" jdbcType="TIMESTAMP" />
+    <result column="post_status" property="postStatus" jdbcType="VARCHAR" />
+    <result column="comment_status" property="commentStatus" jdbcType="VARCHAR" />
+    <result column="post_password" property="postPassword" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="post_modified" property="postModified" jdbcType="TIMESTAMP" />
+    <result column="post_modified_gmt" property="postModifiedGmt" jdbcType="TIMESTAMP" />
+    <result column="post_parent" property="postParent" jdbcType="BIGINT" />
+    <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    <result column="post_type" property="postType" jdbcType="VARCHAR" />
+    <result column="post_mime_type" property="postMimeType" jdbcType="VARCHAR" />
+    <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" extends="BaseResultMap" >
+    <result column="post_content" property="postContent" jdbcType="LONGVARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="LONGVARCHAR" />
+    <result column="post_excerpt" property="postExcerpt" jdbcType="LONGVARCHAR" />
+    <result column="post_content_filtered" property="postContentFiltered" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, post_author, post_date, post_date_gmt, post_status, comment_status, post_password, 
+    post_name, post_modified, post_modified_gmt, post_parent, menu_order, post_type, 
+    post_mime_type, comment_count
+  </sql>
+  <sql id="Blob_Column_List" >
+    post_content, post_title, post_excerpt, post_content_filtered
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.huang.rp.web.blog.domain.BlogPostsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huang.rp.web.blog.domain.BlogPostsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from blog_posts
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huang.rp.web.blog.domain.BlogPostsExample" >
+    delete from blog_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
+    insert into blog_posts (ID, post_author, post_date, 
+      post_date_gmt, post_status, comment_status, 
+      post_password, post_name, post_modified, 
+      post_modified_gmt, post_parent, menu_order, 
+      post_type, post_mime_type, comment_count, 
+      post_content, post_title, post_excerpt, 
+      post_content_filtered)
+    values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, #{postDate,jdbcType=TIMESTAMP}, 
+      #{postDateGmt,jdbcType=TIMESTAMP}, #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR}, 
+      #{postPassword,jdbcType=VARCHAR}, #{postName,jdbcType=VARCHAR}, #{postModified,jdbcType=TIMESTAMP}, 
+      #{postModifiedGmt,jdbcType=TIMESTAMP}, #{postParent,jdbcType=BIGINT}, #{menuOrder,jdbcType=INTEGER}, 
+      #{postType,jdbcType=VARCHAR}, #{postMimeType,jdbcType=VARCHAR}, #{commentCount,jdbcType=BIGINT}, 
+      #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, #{postExcerpt,jdbcType=LONGVARCHAR}, 
+      #{postContentFiltered,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
+    insert into blog_posts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="postAuthor != null" >
+        post_author,
+      </if>
+      <if test="postDate != null" >
+        post_date,
+      </if>
+      <if test="postDateGmt != null" >
+        post_date_gmt,
+      </if>
+      <if test="postStatus != null" >
+        post_status,
+      </if>
+      <if test="commentStatus != null" >
+        comment_status,
+      </if>
+      <if test="postPassword != null" >
+        post_password,
+      </if>
+      <if test="postName != null" >
+        post_name,
+      </if>
+      <if test="postModified != null" >
+        post_modified,
+      </if>
+      <if test="postModifiedGmt != null" >
+        post_modified_gmt,
+      </if>
+      <if test="postParent != null" >
+        post_parent,
+      </if>
+      <if test="menuOrder != null" >
+        menu_order,
+      </if>
+      <if test="postType != null" >
+        post_type,
+      </if>
+      <if test="postMimeType != null" >
+        post_mime_type,
+      </if>
+      <if test="commentCount != null" >
+        comment_count,
+      </if>
+      <if test="postContent != null" >
+        post_content,
+      </if>
+      <if test="postTitle != null" >
+        post_title,
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt,
+      </if>
+      <if test="postContentFiltered != null" >
+        post_content_filtered,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="postAuthor != null" >
+        #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postDateGmt != null" >
+        #{postDateGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postPassword != null" >
+        #{postPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="postModified != null" >
+        #{postModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postModifiedGmt != null" >
+        #{postModifiedGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postParent != null" >
+        #{postParent,jdbcType=BIGINT},
+      </if>
+      <if test="menuOrder != null" >
+        #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="postType != null" >
+        #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="postMimeType != null" >
+        #{postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postContentFiltered != null" >
+        #{postContentFiltered,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huang.rp.web.blog.domain.BlogPostsExample" resultType="java.lang.Integer" >
+    select count(*) from blog_posts
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blog_posts
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.postAuthor != null" >
+        post_author = #{record.postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="record.postDate != null" >
+        post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.postDateGmt != null" >
+        post_date_gmt = #{record.postDateGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.postStatus != null" >
+        post_status = #{record.postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentStatus != null" >
+        comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postPassword != null" >
+        post_password = #{record.postPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postName != null" >
+        post_name = #{record.postName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postModified != null" >
+        post_modified = #{record.postModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.postModifiedGmt != null" >
+        post_modified_gmt = #{record.postModifiedGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.postParent != null" >
+        post_parent = #{record.postParent,jdbcType=BIGINT},
+      </if>
+      <if test="record.menuOrder != null" >
+        menu_order = #{record.menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="record.postType != null" >
+        post_type = #{record.postType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.postMimeType != null" >
+        post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentCount != null" >
+        comment_count = #{record.commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.postContent != null" >
+        post_content = #{record.postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.postTitle != null" >
+        post_title = #{record.postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.postExcerpt != null" >
+        post_excerpt = #{record.postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.postContentFiltered != null" >
+        post_content_filtered = #{record.postContentFiltered,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update blog_posts
+    set ID = #{record.id,jdbcType=BIGINT},
+      post_author = #{record.postAuthor,jdbcType=BIGINT},
+      post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      post_date_gmt = #{record.postDateGmt,jdbcType=TIMESTAMP},
+      post_status = #{record.postStatus,jdbcType=VARCHAR},
+      comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      post_password = #{record.postPassword,jdbcType=VARCHAR},
+      post_name = #{record.postName,jdbcType=VARCHAR},
+      post_modified = #{record.postModified,jdbcType=TIMESTAMP},
+      post_modified_gmt = #{record.postModifiedGmt,jdbcType=TIMESTAMP},
+      post_parent = #{record.postParent,jdbcType=BIGINT},
+      menu_order = #{record.menuOrder,jdbcType=INTEGER},
+      post_type = #{record.postType,jdbcType=VARCHAR},
+      post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
+      comment_count = #{record.commentCount,jdbcType=BIGINT},
+      post_content = #{record.postContent,jdbcType=LONGVARCHAR},
+      post_title = #{record.postTitle,jdbcType=LONGVARCHAR},
+      post_excerpt = #{record.postExcerpt,jdbcType=LONGVARCHAR},
+      post_content_filtered = #{record.postContentFiltered,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blog_posts
+    set ID = #{record.id,jdbcType=BIGINT},
+      post_author = #{record.postAuthor,jdbcType=BIGINT},
+      post_date = #{record.postDate,jdbcType=TIMESTAMP},
+      post_date_gmt = #{record.postDateGmt,jdbcType=TIMESTAMP},
+      post_status = #{record.postStatus,jdbcType=VARCHAR},
+      comment_status = #{record.commentStatus,jdbcType=VARCHAR},
+      post_password = #{record.postPassword,jdbcType=VARCHAR},
+      post_name = #{record.postName,jdbcType=VARCHAR},
+      post_modified = #{record.postModified,jdbcType=TIMESTAMP},
+      post_modified_gmt = #{record.postModifiedGmt,jdbcType=TIMESTAMP},
+      post_parent = #{record.postParent,jdbcType=BIGINT},
+      menu_order = #{record.menuOrder,jdbcType=INTEGER},
+      post_type = #{record.postType,jdbcType=VARCHAR},
+      post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
+      comment_count = #{record.commentCount,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
+    update blog_posts
+    <set >
+      <if test="postAuthor != null" >
+        post_author = #{postAuthor,jdbcType=BIGINT},
+      </if>
+      <if test="postDate != null" >
+        post_date = #{postDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postDateGmt != null" >
+        post_date_gmt = #{postDateGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postStatus != null" >
+        post_status = #{postStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="commentStatus != null" >
+        comment_status = #{commentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="postPassword != null" >
+        post_password = #{postPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="postName != null" >
+        post_name = #{postName,jdbcType=VARCHAR},
+      </if>
+      <if test="postModified != null" >
+        post_modified = #{postModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postModifiedGmt != null" >
+        post_modified_gmt = #{postModifiedGmt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postParent != null" >
+        post_parent = #{postParent,jdbcType=BIGINT},
+      </if>
+      <if test="menuOrder != null" >
+        menu_order = #{menuOrder,jdbcType=INTEGER},
+      </if>
+      <if test="postType != null" >
+        post_type = #{postType,jdbcType=VARCHAR},
+      </if>
+      <if test="postMimeType != null" >
+        post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="commentCount != null" >
+        comment_count = #{commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="postContent != null" >
+        post_content = #{postContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postTitle != null" >
+        post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postExcerpt != null" >
+        post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="postContentFiltered != null" >
+        post_content_filtered = #{postContentFiltered,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
+    update blog_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_date_gmt = #{postDateGmt,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_password = #{postPassword,jdbcType=VARCHAR},
+      post_name = #{postName,jdbcType=VARCHAR},
+      post_modified = #{postModified,jdbcType=TIMESTAMP},
+      post_modified_gmt = #{postModifiedGmt,jdbcType=TIMESTAMP},
+      post_parent = #{postParent,jdbcType=BIGINT},
+      menu_order = #{menuOrder,jdbcType=INTEGER},
+      post_type = #{postType,jdbcType=VARCHAR},
+      post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      comment_count = #{commentCount,jdbcType=BIGINT},
+      post_content = #{postContent,jdbcType=LONGVARCHAR},
+      post_title = #{postTitle,jdbcType=LONGVARCHAR},
+      post_excerpt = #{postExcerpt,jdbcType=LONGVARCHAR},
+      post_content_filtered = #{postContentFiltered,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huang.rp.web.blog.domain.BlogPosts" >
+    update blog_posts
+    set post_author = #{postAuthor,jdbcType=BIGINT},
+      post_date = #{postDate,jdbcType=TIMESTAMP},
+      post_date_gmt = #{postDateGmt,jdbcType=TIMESTAMP},
+      post_status = #{postStatus,jdbcType=VARCHAR},
+      comment_status = #{commentStatus,jdbcType=VARCHAR},
+      post_password = #{postPassword,jdbcType=VARCHAR},
+      post_name = #{postName,jdbcType=VARCHAR},
+      post_modified = #{postModified,jdbcType=TIMESTAMP},
+      post_modified_gmt = #{postModifiedGmt,jdbcType=TIMESTAMP},
+      post_parent = #{postParent,jdbcType=BIGINT},
+      menu_order = #{menuOrder,jdbcType=INTEGER},
+      post_type = #{postType,jdbcType=VARCHAR},
+      post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      comment_count = #{commentCount,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
