@@ -51,6 +51,13 @@ public class BlogController extends BaseController {
 	@Autowired
 	FileService fleService;
 	
+	/**
+	 * 与springMVC集成需要修改ueditor提供的默认驱动
+	 * 初始化的主要作用就是,加载config.json为json串返回到前端
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value="ueditorInit",params={"action=config"})
 	@ResponseBody
 	public String ueditorInit(HttpServletRequest request,HttpServletResponse response){
