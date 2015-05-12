@@ -97,7 +97,6 @@ public class BlogController extends BaseController {
 	 */
 	@RequestMapping(value="edit")
 	public ResponseEntity<?> editBlogPost(BlogPostsWithBLOBs blogPost,HttpServletRequest request,HttpServletResponse response){
-		System.out.println(1);
 		Map<String,String> state=Maps.newHashMap();
 		try{
 			List<Map<String,String>> fileInfos=fleService.uploadImage(request);
