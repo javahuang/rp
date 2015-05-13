@@ -154,7 +154,7 @@
       #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, #{postExcerpt,jdbcType=LONGVARCHAR}, 
       #{postContentFiltered,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" keyProperty="id" useGeneratedKeys="true">
     insert into blog_posts
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

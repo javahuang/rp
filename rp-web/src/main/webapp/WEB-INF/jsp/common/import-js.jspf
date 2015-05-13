@@ -7,11 +7,11 @@
 			'app' : 'js/application',
 			'jquery' : 'js/jquery-1.10.1.min',//后面不能带后缀
 			'j-u-b' : 'comp/jquery-ui-bootstrap/js',
-			"bootstrap" : "comp/bootstrap/js/bootstrap",
 			"jqlayout":'comp/jquery-ui-bootstrap/js/jquery.layout-latest',
 			"index":'js/index',
 			"jqueryplugin":'js/jqueryplugin',
-			'jqueryui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui'
+			"bootstrap" : "comp/jquery-ui-bootstrap3/assets/js/vendor/bootstrap",
+			'jquery-ui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui'
 		},
 		waitSeconds : 15,
 		map : {
@@ -25,6 +25,10 @@
 				"deps" : [ 'jquery' ]
 			},
 			"jqlayout":{
+				"deps" : [ 'jquery' ]
+			},
+			"jquery-ui":{
+				exports: "$",
 				"deps" : [ 'jquery' ]
 			}
 		//'app': ['css! css/test.css']

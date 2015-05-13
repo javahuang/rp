@@ -19,9 +19,9 @@
 		<context:include-filter type="annotation"
 			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
-	
+
 	<context:property-placeholder location="classpath:resources.properties" />
-	
+
 	<!-- 会自动注册了validator ConversionService -->
 	<mvc:annotation-driven validator="validator"
 		conversion-service="conversionService" content-negotiation-manager="contentNegotiationManager"
@@ -31,8 +31,8 @@
 		<mvc:async-support default-timeout="30000"
 			task-executor="executor" />
 
-		<mvc:message-converters register-defaults="true">
-			<!-- StringHttpMessageConverter编码为UTF-8，防止乱码 -->
+	  <mvc:message-converters register-defaults="true">
+        <!-- StringHttpMessageConverter编码为UTF-8，防止乱码 -->
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<constructor-arg value="UTF-8" />
 				<property name="supportedMediaTypes">
@@ -50,10 +50,10 @@
 					</list>
 				</property>
 			</bean>
-		</mvc:message-converters>
+    </mvc:message-converters>
 
 	</mvc:annotation-driven>
-	<mvc:view-controller path="/" view-name="redirect:/index"/>
+	<mvc:view-controller path="/" view-name="redirect:/index" />
 
 	<!-- 当在web.xml 中 DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
 	<mvc:default-servlet-handler />

@@ -60,11 +60,11 @@
 					</ul>
 				</div>
 				<h3>
-					<a href="#">测试2</a>
+					<a href="#">系统管理</a>
 				</h3>
 				<div class="submenu">
 					<ul>
-						<li><a href="/test2">测试21</a></li>
+						<li><a href="${ctx }/sys/cache">缓存管理</a></li>
 					</ul>
 				</div>
 			</div>

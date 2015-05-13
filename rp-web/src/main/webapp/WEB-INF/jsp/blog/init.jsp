@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-<form action="${ctx}/blog/edit" method="post" id="edit_form">
+<form action="${ctx}/blog/edit.json" method="post" id="edit_form">
 <div id="edit-content">
 <div id="edit-title" class="form-group form-inline ">
     <label for="postTitle"><b>标题:</b></label>
@@ -57,14 +57,15 @@ var ue = UE.getEditor('editor');
 </script>
 <%@include file="/WEB-INF/jsp/common/import-js.jspf"%>
 <script type="text/javascript">
-//http://getfishtank.ca/blog/how-to-use-bootstrap-3-with-reffquirejs
-require(['jquery','bootstrap',"jqueryui","index/blog"], function($){
+require(["jquery-ui",'bootstrap','index/blog'], function(){
+	//http://getfishtank.ca/blog/how-to-use-bootstrap-3-with-requirejs
     // DOM ready
-        // Twitter Bootstrap 3 carousel plugin
-      //  $("#element").carousel();
+    $(function(){
     	$("#menu-collapse").accordion({
     	    header: "h3"
     	});
+    });
+   
 });
 </script>
 </body>

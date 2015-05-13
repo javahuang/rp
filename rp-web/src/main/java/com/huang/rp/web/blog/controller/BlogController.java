@@ -28,6 +28,7 @@ import com.baidu.ueditor.MyActionEnter;
 import com.google.common.collect.Maps;
 import com.huang.rp.common.web.controller.BaseController;
 import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
+import com.huang.rp.web.blog.service.BlogService;
 import com.huang.rp.web.blog.service.FileService;
 
 /**
@@ -50,10 +51,11 @@ public class BlogController extends BaseController {
 	
 	@Autowired
 	FileService fleService;
+	@Autowired
+	BlogService blogService;
 	
 	/**
-	 * 与springMVC集成需要修改ueditor提供的默认驱动
-	 * 初始化的主要作用就是,加载config.json为json串返回到前端
+	 * 与springMVC集成需要修改ueditor提供de
 	 * @param request
 	 * @param response
 	 * @return
@@ -103,11 +105,14 @@ public class BlogController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="edit")
+	@ResponseBody
 	public ResponseEntity<?> editBlogPost(BlogPostsWithBLOBs blogPost,HttpServletRequest request,HttpServletResponse response){
 		Map<String,String> state=Maps.newHashMap();
+		String[]tags=request.getParameterValues("tags");
 		try{
-			List<Map<String,String>> fileInfos=fleService.uploadImage(request);
-			state.putAll(fileInfos.get(0));
+			blogService.addBlogPost(blogPost,tags);
+			//List<Map<String,String>> fileInfos=fleService.uploadImage(request);
+			//state.putAll(fileInfos.get(0));
 			state.put("state", "SUCCESS");
 		}catch(Exception e){
 			state.put("state", "上传失败");

@@ -78,6 +78,10 @@ public class CacheUtils {
 		return CacheManager.getInstance();
 	}
 	
+	/**
+	 * 得到某个缓存使用次数
+	 * @param cacheName
+	 */
 	public static void getStatistics(String cacheName){
 		getCacheManager().getCache(cacheName).getStatistics().getInMemoryHits();//换取缓存命中次数
 	}
