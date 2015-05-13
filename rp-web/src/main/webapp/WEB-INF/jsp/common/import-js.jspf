@@ -8,10 +8,12 @@
 			'jquery' : 'js/jquery-1.10.1.min',//后面不能带后缀
 			'j-u-b' : 'comp/jquery-ui-bootstrap/js',
 			"jqlayout":'comp/jquery-ui-bootstrap/js/jquery.layout-latest',
-			"index":'js/index',
+			"module":'js/module',//
 			"jqueryplugin":'js/jqueryplugin',
 			"bootstrap" : "comp/jquery-ui-bootstrap3/assets/js/vendor/bootstrap",
-			'jquery-ui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui'
+			'jquery-ui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui',
+			'jqgridlocale':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/i18n/grid.locale-cn',
+			'jqgrid':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/jquery.jqGrid.min'
 		},
 		waitSeconds : 15,
 		map : {
@@ -30,7 +32,13 @@
 			"jquery-ui":{
 				exports: "$",
 				"deps" : [ 'jquery' ]
-			}
+			},
+			"jqgrid":{
+		        deps:['jquery-ui','jqgridlocale']
+		    },
+		    "jqgridlocale":{
+		        deps:['jquery-ui']
+		    }
 		//'app': ['css! css/test.css']
 		}
 	})

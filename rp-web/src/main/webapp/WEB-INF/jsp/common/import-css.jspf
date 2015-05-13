@@ -16,6 +16,6 @@
 <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
 <!--[if lt IE 9]><script src="${ctx}/static/js/html5.js?2"></script><![endif]-->
 
-
-
-
+<!-- jqGrid-->
+<link rel="stylesheet" href="${ctx}/static/comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" href="${ctx}/static/comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid.overrides.css">

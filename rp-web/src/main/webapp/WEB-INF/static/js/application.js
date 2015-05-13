@@ -11,6 +11,6 @@ define(function(require, exports) {
 	require("bootstrap");
 	require("j-u-b/jquery-ui");
 	require("js/layout");//页面布局
-	require("index/login");//登录页面
+	require("module/index/login");//登录页面
 	
 });

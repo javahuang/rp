@@ -57,7 +57,7 @@ var ue = UE.getEditor('editor');
 </script>
 <%@include file="/WEB-INF/jsp/common/import-js.jspf"%>
 <script type="text/javascript">
-require(["jquery-ui",'bootstrap','index/blog'], function(){
+require(["jquery-ui",'bootstrap','module/blog/blog'], function(){
 	//http://getfishtank.ca/blog/how-to-use-bootstrap-3-with-requirejs
     // DOM ready
     $(function(){

@@ -25,6 +25,7 @@ import com.huang.rp.sys.rbac.domain.SysUser;
 public class RbacService {
 	@Autowired
 	SysUserMapper sysUserMapper;
+	
 	/**
 	 * @param user
 	 */
