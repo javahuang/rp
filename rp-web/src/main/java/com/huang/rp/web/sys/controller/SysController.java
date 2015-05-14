@@ -5,10 +5,22 @@
  */
 package com.huang.rp.web.sys.controller;
 
+import java.util.List;
+
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Lists;
+import com.huang.rp.common.cache.CacheUtils;
+import com.huang.rp.common.persistence.domain.Pagination;
+import com.huang.rp.common.persistence.domain.PaginationContext;
 import com.huang.rp.common.web.controller.BaseController;
+import com.huang.rp.web.sys.domain.CacheEntity;
+import com.huang.rp.web.sys.fliter.CacheFilter;
 
 /**
  * 系统管理控制器
@@ -29,7 +41,27 @@ public class SysController extends BaseController{
 		return "sys/cache/init";
 	}
 	
-	
+	@RequestMapping("/cache/gridinit")
+	@ResponseBody
+	public  Pagination<CacheEntity> initgrid(CacheFilter filter){
+		CacheManager cacheManager=CacheUtils.getCacheManager();
+		String[]cacheNames=cacheManager.getCacheNames();
+		List<CacheEntity>cacheList=Lists.newArrayList();
+		for(String cacheName:cacheNames){
+			Cache currCache=cacheManager.getCache(cacheName);
+			CacheEntity entity=new CacheEntity();
+			entity.setCacheName(cacheName);
+			entity.setSize(currCache.getSize());
+			entity.setMemoryHits(currCache.getStatistics().getCacheHits());
+			entity.setMemortMisses(currCache.getStatistics().getCacheMisses());
+			entity.setDiskStoreSize(currCache.getDiskStoreSize());
+			entity.setMemoryStoreSize(currCache.getMemoryStoreSize());
+			cacheList.add(entity);
+		}
+		Pagination<CacheEntity>response=PaginationContext.getPagination();
+		response.setRows(cacheList);
+		return response;
+	}
 	
 	
 	

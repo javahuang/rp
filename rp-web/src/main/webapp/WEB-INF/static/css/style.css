@@ -154,3 +154,48 @@ h3{
 #menu-collapse>div>div{
 	width: 100%;
 }
+
+#select {
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  border: 1px solid #cccccc;
+  color: #404040;
+}
+
+.select-main{
+	margin: 2px;
+	height: auto;
+	overflow: hidden;
+	font-size: 14px;
+	background-color: #ffffff;
+}
+.select-main ol li{
+	float: left;
+	margin-right: 15px;
+}
+.select-main input[type=checkbox],.select-main input{	
+	float: left;
+}
+.select-main select{
+	float: left;	
+}
+.select-main form{
+	margin:2px 2px!important;
+}
+.select-main label{
+	float: left;
+	margin-left: 3px;
+	margin-right: 4px;
+	font-weight: normal;
+	width: 70px\0;/* ie 8/9 */
+	display: block;
+}
+.select-main input{
+	width: 150px\0;/* ie 8/9 */
+	padding: 4px\0;/* ie 8/9 */	
+}
+.select-one{margin-top: 2px; float: left;}
+.prompt{
+	color: #F00;
+	margin-top: 6px;	
+}

@@ -32,13 +32,13 @@ public class PaginationContext {
 		return pagination;
 	}
 	
-	public static <T> Pagination<T>  getPagination(List<T>dataList){
-		if(CollectionUtils.isEmpty(dataList)){
+	public static <T> Pagination<T>  getPagination(List<T>rows){
+		if(CollectionUtils.isEmpty(rows)){
 			return new Pagination<T>();
 		}
 		//直接getPagination().setDataList(dataList)会出现异常 编译器不能保证get的类型会和T是一致的
 		Pagination<T> pagination=(Pagination<T>)getPagination();
-		return pagination.setDataList(dataList);
+		return pagination.setRows(rows);
 	}
 
 }

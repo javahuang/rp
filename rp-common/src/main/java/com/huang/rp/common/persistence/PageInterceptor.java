@@ -111,7 +111,7 @@ public class PageInterceptor implements Interceptor {
                 // 计算总页数
                 int total = totalRecord / rows;
                 total = totalRecord % rows == 0 ? total : total + 1;
-                filter.setTotalPage(total);
+                filter.setTotal(total);
             }
         } catch (SQLException e) {
             e.printStackTrace();

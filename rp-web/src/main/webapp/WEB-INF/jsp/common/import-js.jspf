@@ -1,6 +1,7 @@
 <script type="text/javascript" src="${ctx }/static/js/constant.js"></script>
 <script type="text/javascript" src="${ctx }/static/js/require.js"></script>
 <script type="text/javascript">
+	var contextPath='${ctx}';
 	require.config({
 		baseUrl : '${ctx}/static',//默认是加载requirejs页面的位置
 		paths : {
@@ -12,8 +13,10 @@
 			"jqueryplugin":'js/jqueryplugin',
 			"bootstrap" : "comp/jquery-ui-bootstrap3/assets/js/vendor/bootstrap",
 			'jquery-ui':'comp/jquery-ui-bootstrap3/assets/js/vendor/jquery-ui',
-			'jqgridlocale':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/i18n/grid.locale-cn',
-			'jqgrid':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/jquery.jqGrid.min'
+			//'jqgridlocale':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/i18n/grid.locale-cn',
+			//'jqgrid':'comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/js/jquery.jqGrid.min'
+			'jqgridlocale':'comp/jqgrid/4.5.4/js/i18n/grid.locale-cn',
+			'jqgrid':'comp/jqgrid/4.5.4/js/jquery.jqGrid.min'
 		},
 		waitSeconds : 15,
 		map : {
@@ -34,7 +37,7 @@
 				"deps" : [ 'jquery' ]
 			},
 			"jqgrid":{
-		        deps:['jquery-ui','jqgridlocale']
+		        deps:['jqgridlocale']
 		    },
 		    "jqgridlocale":{
 		        deps:['jquery-ui']

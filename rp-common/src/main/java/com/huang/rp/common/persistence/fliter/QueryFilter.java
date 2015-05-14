@@ -22,7 +22,7 @@ public class QueryFilter {
 	private Integer page = 1;// 当前页码
 	private Integer rows = 15;// 每页记录数
 	private Integer records;// 总记录数
-	private Integer totalPage;// 页码总数
+	private Integer total;// 页码总数
 	
 	private String sidx;//排序字段
 	private String sord;//排序方式 asc/desc
@@ -50,16 +50,14 @@ public class QueryFilter {
 	public void setRecords(Integer records) {
 		this.records = records;
 	}
-
-	public Integer getTotalPage() {
-		return totalPage;
+	
+	public Integer getTotal() {
+		return total;
 	}
 
-	public void setTotalPage(Integer totalPage) {
-		this.totalPage = totalPage;
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
-	
-	
 
 	public String getSidx() {
 		return sidx;
@@ -80,7 +78,7 @@ public class QueryFilter {
 	public static void setLocal(QueryFilter filter) {
 		PaginationContext.pag.set(PaginationContext.getPagination()
 				.setPage(filter.getPage()).setRecords(filter.getRecords())
-				.setTotalPage(filter.getTotalPage()).setRows(filter.getRows()));
+				.setTotal(filter.getTotal()));
 	}
 
 }
