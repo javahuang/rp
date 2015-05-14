@@ -13,10 +13,11 @@
 <meta name="HandheldFriendly" content="True">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="${ctx }/static/images/cg.png">
-<%@include file="/WEB-INF/jsp/common/import-css.jspf"%>
 <meta name="author" content="hrp">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="http://hrps.me/">
 <meta name="generator" content="Ghost 0.5">
+<%@include file="/WEB-INF/jsp/common/import-css.jspf"%>
+<%@include file="/WEB-INF/jsp/common/import-codehight.jspf"%>
 <script type="text/javascript">var contextPath='${ctx}';</script>
 </head>

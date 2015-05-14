@@ -44,7 +44,7 @@ require.config({
 	paths:{
 		'app':'js/application',
 		'jquery':'js/jquery-1.10.1.min',//后面不能带后缀
-		'nicescroll':'comp/nicescroll/jquery.nicescroll'
+		'nicescroll':'comp/nicescroll/jquery.nicescroll.min'
 	},
 	waitSeconds: 15,
 	map:{

@@ -14,12 +14,12 @@
 		<div class="post-metadata hidden-xs">
 			<div class="metadata">
 				<ul class="list-inline clearfix">
-					<li class="meta-date"><i class="fa fa-calendar"><span><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${p.postDate }"></fmt:formatDate></span></i></li>
+					<li class="meta-date"><i class="fa fa-calendar" title="创建时间"><span><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${p.postDate }"></fmt:formatDate></span></i></li>
 					<li class="meta-author"><i class="fa fa-user"></i><span><a
 							style="font-size: 12px;" href="#" title="${p.postAuthor }"><rp:cache attrName="username" key="${p.postAuthor}" cacheName="userCache"></rp:cache></a></span></li>
 					<li class="meta-comments"><i class="fa fa-comments-o"><span><a
 								href="#comment">查看评论</a></span></i></li>
-					<li class="meta-heart"><i class="fa fa-heart-o"></i></li>
+					<li class="meta-heart" title="喜欢我"><i class="fa fa-heart-o"></i></li>
 				</ul>
 				<rp:tags tags="${p.tags}"></rp:tags>
 			</div>

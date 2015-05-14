@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="term_id" property="termId" jdbcType="BIGINT" />
     <result column="post_id" property="postId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, term_id, post_id
+    id, term_id, post_id, type
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.huang.rp.web.blog.domain.BlogPostTermsExample" >
     select
@@ -98,10 +99,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.huang.rp.web.blog.domain.BlogPostTerms" >
-    insert into blog_post_terms (id, term_id, post_id
-      )
-    values (#{id,jdbcType=BIGINT}, #{termId,jdbcType=BIGINT}, #{postId,jdbcType=BIGINT}
-      )
+    insert into blog_post_terms (id, term_id, post_id, 
+      type)
+    values (#{id,jdbcType=BIGINT}, #{termId,jdbcType=BIGINT}, #{postId,jdbcType=BIGINT}, 
+      #{type,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostTerms" >
     insert into blog_post_terms
@@ -115,6 +116,9 @@
       <if test="postId != null" >
         post_id,
       </if>
+      <if test="type != null" >
+        type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -125,6 +129,9 @@
       </if>
       <if test="postId != null" >
         #{postId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -146,6 +153,9 @@
       <if test="record.postId != null" >
         post_id = #{record.postId,jdbcType=BIGINT},
       </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -155,7 +165,8 @@
     update blog_post_terms
     set id = #{record.id,jdbcType=BIGINT},
       term_id = #{record.termId,jdbcType=BIGINT},
-      post_id = #{record.postId,jdbcType=BIGINT}
+      post_id = #{record.postId,jdbcType=BIGINT},
+      type = #{record.type,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -169,13 +180,17 @@
       <if test="postId != null" >
         post_id = #{postId,jdbcType=BIGINT},
       </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.huang.rp.web.blog.domain.BlogPostTerms" >
     update blog_post_terms
     set term_id = #{termId,jdbcType=BIGINT},
-      post_id = #{postId,jdbcType=BIGINT}
+      post_id = #{postId,jdbcType=BIGINT},
+      type = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

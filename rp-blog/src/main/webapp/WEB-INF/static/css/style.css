@@ -7932,6 +7932,9 @@ textarea {
 #m-sidebar .sidebar-container .logo-box .logo-link:hover {
 	text-decoration:none
 }
+#m-sidebar .sidebar-container .logo-box sup {
+	font-size:4px;
+}
 #m-sidebar .sidebar-container .logo-box .logo-desc {
 	color:#ABABAB;
 	text-align:center;
@@ -8147,7 +8150,8 @@ textarea {
 	cursor: pointer;
 }
 #m-post-list .metadata .meta-heart {
-	float:right
+	float:right;
+	cursor: pointer;
 }
 @media (max-width:767px) {
 	#m-post-list {

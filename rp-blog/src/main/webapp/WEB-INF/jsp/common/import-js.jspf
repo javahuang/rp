@@ -1,6 +1,2 @@
 <script type="text/javascript" src="${ctx }/static/js/constant.js"></script>
 <script type="text/javascript" src="${ctx }/static/js/require.js"></script>
-<script type="text/javascript" src="${ctx }/static/comp/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
-<script>
-SyntaxHighlighter.all() //执行代码高亮
-</script>

@@ -7,6 +7,8 @@ public class BlogPostTerms {
 
     private Long postId;
 
+    private String type;
+
     public Long getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class BlogPostTerms {
 
     public void setPostId(Long postId) {
         this.postId = postId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

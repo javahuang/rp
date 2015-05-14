@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <div class="sidebar-container">
 	<div class="logo-box">
-		<a href="#" class="logo-link" title="Thoughts, stories and ideas.">发条</a>
+		<a href="#" class="logo-link" title="Thoughts, stories and ideas.">大黄</a>
 		<p class="logo-desc">Thoughts, stories and ideas.</p>
 	</div>
 	<ul class="site-nav-box row">

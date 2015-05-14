@@ -31,6 +31,13 @@ define(function(require,exports){
 				eventInit();
 			});
 		})
+		$(".meta-heart").click(function(){//喜欢我
+			if($(this).find("i").hasClass("fa-heart")){
+				alert('爱过~');
+				return;
+			}
+			$(this).html('<i class="fa fa-heart" style="color:red"></i>');
+		});
 	}
 	
 	//滚动条初始化

@@ -6,12 +6,15 @@
 package com.huang.rp.web.blog.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.huang.rp.common.Constants;
 import com.huang.rp.common.utils.Securitys;
 import com.huang.rp.web.blog.dao.BlogPostTermsMapper;
 import com.huang.rp.web.blog.dao.BlogPostsMapper;
@@ -34,6 +37,8 @@ public class BlogService {
 	@Autowired
 	BlogPostTermsMapper blogPostTermsMapper;
 	
+	@Value("${file.server.path}")
+	String fileServerPath;
 	/**
 	 * 添加文章
 	 * @param blogPost 文章实体
@@ -44,6 +49,8 @@ public class BlogService {
 		blogPost.setPostDate(new Date());
 		blogPost.setPostDateGmt(new Date());
 		blogPost.setPostExcerpt(getPostExcerpt(blogPost));
+		blogPost.setHasCode(hasCode(blogPost));
+		blogPost.setHasPic(false);
 		blogPostsMapper.insertSelective(blogPost);
 		Long postId=blogPost.getId();//返回自增长的主键
 		if(tags!=null)
@@ -51,6 +58,7 @@ public class BlogService {
 			BlogPostTerms blogPostTerm=new BlogPostTerms();
 			blogPostTerm.setPostId(postId);
 			blogPostTerm.setTermId(Long.parseLong(tag));
+			blogPostTerm.setType(Constants.SYS_PARAMETER_TAGS);
 			blogPostTermsMapper.insertSelective(blogPostTerm);
 		}
 	}
@@ -65,16 +73,27 @@ public class BlogService {
 		//去掉所有的<>
 		String blogContent=blogPost.getPostContent();
 		Validate.notNull(blogContent);
-		String blogExcerpt=blogContent.replaceAll("<[^>]+>", " ");//正则的反向字符集  匹配不在指定的范围内的任何字符
-		blogExcerpt=blogExcerpt.replaceAll("\\s+", " ").replaceAll("\\s", ",");
-		if(blogExcerpt.startsWith(",")){
-			blogExcerpt=blogExcerpt.replaceFirst(",", "  ");//行首空两格
-		}
+		String blogExcerpt=blogContent.replaceAll("<[^>]+>", "");//正则的反向字符集  匹配不在指定的范围内的任何字符
+		//blogExcerpt=blogExcerpt.replaceAll("\\s+", " ").replaceAll("\\s", ",");
+//		if(blogExcerpt.startsWith(",")){
+//			blogExcerpt=blogExcerpt.replaceFirst(",", "  ");//行首空两格
+//		}
 		blogExcerpt=blogExcerpt.trim();
 		if(blogExcerpt.length()>50){
 			return blogExcerpt.substring(0, 50)+"...";
 		}
 		return blogExcerpt;
 	}
-
+	
+	/**
+	 * 代码包含图片列表
+	 * @param blogPost
+	 * @return
+	 */
+	private List<String> hacPic(BlogPostsWithBLOBs blogPost){
+		return null;
+	}
+	private boolean hasCode(BlogPostsWithBLOBs blogPost){
+		return blogPost.getPostContent().contains("class=\"brush:");
+	}
 }

@@ -2,5 +2,6 @@
 .project
 .war
 .pom
+node_modules/
 .settings/
 target/

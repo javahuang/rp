@@ -1,0 +1,8 @@
+<%@include file="/WEB-INF/jsp/common/taglibs.jspf"%>
+<c:if test="${article.hasCode }">
+<link rel="stylesheet" href="${ctx}/static/comp/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" type="text/css" />
+<script type="text/javascript" src="${ctx }/static/comp/ueditor/third-party/SyntaxHighlighter/shCore.min.js"></script>
+<script type="text/javascript">
+SyntaxHighlighter.all() //执行代码高亮
+</script>
+</c:if>

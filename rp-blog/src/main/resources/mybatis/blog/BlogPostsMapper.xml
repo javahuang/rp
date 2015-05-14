@@ -123,6 +123,7 @@
 		on bpt.term_id=sp.code
 		<!-- 标签 paraType='T001' -->
 	 	where sp.para_code='T001'
+	 	and bpt.type=sp.para_code
 	 	GROUP BY bpt.post_id)tag
 		on bp.ID=tag.post_id
 		<if test="tagId!=null and tagId !=''">
