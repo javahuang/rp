@@ -1,8 +1,8 @@
 define(['jquery','jqgrid'],function($){
 	//jqgrid初始化url
-	var url=contextPath+"/sys/cache/gridinit";
+	var url=contextPath+"/sys/cache";
 	$("#jqGrid").jqGrid({
-		url : url,
+		url : url+"/gridinit",
 	    datatype: "json",
 	    height: "75%",
 	    autowidth:true,
@@ -19,7 +19,7 @@ define(['jquery','jqgrid'],function($){
 	    ],
 	    pager: "#jqGridPager",
 	    viewrecords: true,
-	    caption: "系统缓存管理",
+	    caption: '系统缓存管理--<font color="red">点击刷新单个缓存</font>',
 	    emptyrecords : "没有可显示记录",
 	    hidegrid:false,
 	    viewrecords:true,
@@ -31,17 +31,21 @@ define(['jquery','jqgrid'],function($){
 			total : "total", 
 			records : "records",
 			repeatitems : false, 
-			cell : "cell", 
-			id : "patientId"
+			cell : "cell"
 		}
 	});
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		edit : false,
 		add : false,
 		del : false,
-		search : true,
+		search : false,
 		position : 'right'
-	}).navButtonAdd('#jqGridPager',{caption:"新增",buttonicon:"ui-icon-plus",onClickButton: function(){toAdd()},position:"last"})
-		.navButtonAdd('#jqGridPager',{caption:"编辑",buttonicon:"ui-icon-pencil",onClickButton: function(){toModify()},position:"last"});
-
+	}).navButtonAdd('#jqGridPager',{caption:"刷新缓存",buttonicon:"ui-icon-refresh",onClickButton: function(){refreshCache()},position:"last"});
+	
+	function refreshCache(){//刷新缓存
+		var cacheName = $("#jqGrid").jqGrid('getGridParam','selrow');
+		$.post(url+"/refreshCache",{cacheName:cacheName},function(data){
+			alert(data);
+		})
+	}
 })

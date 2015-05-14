@@ -1005,6 +1005,186 @@ public class BlogPostsExample {
             return (Criteria) this;
         }
 
+        public Criteria andHasCodeIsNull() {
+            addCriterion("has_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeIsNotNull() {
+            addCriterion("has_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeEqualTo(Boolean value) {
+            addCriterion("has_code =", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeNotEqualTo(Boolean value) {
+            addCriterion("has_code <>", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeGreaterThan(Boolean value) {
+            addCriterion("has_code >", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("has_code >=", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeLessThan(Boolean value) {
+            addCriterion("has_code <", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeLessThanOrEqualTo(Boolean value) {
+            addCriterion("has_code <=", value, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeIn(List<Boolean> values) {
+            addCriterion("has_code in", values, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeNotIn(List<Boolean> values) {
+            addCriterion("has_code not in", values, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_code between", value1, value2, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasCodeNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_code not between", value1, value2, "hasCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicIsNull() {
+            addCriterion("has_pic is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicIsNotNull() {
+            addCriterion("has_pic is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicEqualTo(Boolean value) {
+            addCriterion("has_pic =", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicNotEqualTo(Boolean value) {
+            addCriterion("has_pic <>", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicGreaterThan(Boolean value) {
+            addCriterion("has_pic >", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("has_pic >=", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicLessThan(Boolean value) {
+            addCriterion("has_pic <", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicLessThanOrEqualTo(Boolean value) {
+            addCriterion("has_pic <=", value, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicIn(List<Boolean> values) {
+            addCriterion("has_pic in", values, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicNotIn(List<Boolean> values) {
+            addCriterion("has_pic not in", values, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_pic between", value1, value2, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andHasPicNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("has_pic not between", value1, value2, "hasPic");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintIsNull() {
+            addCriterion("is_reprint is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintIsNotNull() {
+            addCriterion("is_reprint is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintEqualTo(Boolean value) {
+            addCriterion("is_reprint =", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintNotEqualTo(Boolean value) {
+            addCriterion("is_reprint <>", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintGreaterThan(Boolean value) {
+            addCriterion("is_reprint >", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_reprint >=", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintLessThan(Boolean value) {
+            addCriterion("is_reprint <", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_reprint <=", value, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintIn(List<Boolean> values) {
+            addCriterion("is_reprint in", values, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintNotIn(List<Boolean> values) {
+            addCriterion("is_reprint not in", values, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_reprint between", value1, value2, "isReprint");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReprintNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_reprint not between", value1, value2, "isReprint");
+            return (Criteria) this;
+        }
+
         public Criteria andCommentCountIsNull() {
             addCriterion("comment_count is null");
             return (Criteria) this;

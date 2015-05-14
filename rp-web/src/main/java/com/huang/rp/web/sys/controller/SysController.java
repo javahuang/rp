@@ -10,6 +10,7 @@ import java.util.List;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +34,9 @@ import com.huang.rp.web.sys.fliter.CacheFilter;
 @RequestMapping("/sys")
 public class SysController extends BaseController{
 	
+	@Autowired 
+	CacheUtils cacheUtils;
+	
 	/**
 	 * 系统缓存管理
 	 */
@@ -40,7 +44,11 @@ public class SysController extends BaseController{
 	public String cacheManager(){
 		return "sys/cache/init";
 	}
-	
+	/**
+	 * 缓存表格初始化
+	 * @param filter
+	 * @return
+	 */
 	@RequestMapping("/cache/gridinit")
 	@ResponseBody
 	public  Pagination<CacheEntity> initgrid(CacheFilter filter){
@@ -62,8 +70,20 @@ public class SysController extends BaseController{
 		response.setRows(cacheList);
 		return response;
 	}
-	
-	
-	
+	/**
+	 * 刷新缓存
+	 * @param cacheName
+	 * @return
+	 */
+	@RequestMapping("/cache/refreshCache")
+	@ResponseBody
+	public String refreshCache(String cacheName){
+		try{
+			cacheUtils.refreshCache(cacheName);
+			return "刷新成功";
+		}catch(Exception e){
+			return "刷新失败";
+		}
+	}
 
 }

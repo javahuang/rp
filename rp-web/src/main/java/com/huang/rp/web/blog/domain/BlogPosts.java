@@ -31,6 +31,12 @@ public class BlogPosts {
 
     private String postMimeType;
 
+    private Boolean hasCode;
+
+    private Boolean hasPic;
+
+    private Boolean isReprint;
+
     private Long commentCount;
 
     public Long getId() {
@@ -143,6 +149,30 @@ public class BlogPosts {
 
     public void setPostMimeType(String postMimeType) {
         this.postMimeType = postMimeType;
+    }
+
+    public Boolean getHasCode() {
+        return hasCode;
+    }
+
+    public void setHasCode(Boolean hasCode) {
+        this.hasCode = hasCode;
+    }
+
+    public Boolean getHasPic() {
+        return hasPic;
+    }
+
+    public void setHasPic(Boolean hasPic) {
+        this.hasPic = hasPic;
+    }
+
+    public Boolean getIsReprint() {
+        return isReprint;
+    }
+
+    public void setIsReprint(Boolean isReprint) {
+        this.isReprint = isReprint;
     }
 
     public Long getCommentCount() {

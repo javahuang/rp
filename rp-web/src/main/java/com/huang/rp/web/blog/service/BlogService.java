@@ -46,6 +46,7 @@ public class BlogService {
 		blogPost.setPostExcerpt(getPostExcerpt(blogPost));
 		blogPostsMapper.insertSelective(blogPost);
 		Long postId=blogPost.getId();//返回自增长的主键
+		if(tags!=null)
 		for(String tag:tags){
 			BlogPostTerms blogPostTerm=new BlogPostTerms();
 			blogPostTerm.setPostId(postId);

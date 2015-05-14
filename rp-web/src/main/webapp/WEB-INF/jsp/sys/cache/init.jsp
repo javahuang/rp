@@ -20,12 +20,6 @@
                          <li> 
                          <input type="text"  id="lccCode" name="lccCode" class="form-control input-sm" placeholder="缓存name"/>
                          </li>
-                          <li> 
-                         <input type="text"  id="lccCode" name="lccCode" class="form-control input-sm" placeholder="缓存name"/>
-                         </li>
-                          <li> 
-                         <input type="text"  id="lccCode" name="lccCode" class="form-control input-sm" placeholder="缓存name"/>
-                         </li>
                         <li> <button type="button" onclick="searchLcc();" class="btn btn-primary btn-sm">查询</button></li>
                     </ol>
                 </fieldset>

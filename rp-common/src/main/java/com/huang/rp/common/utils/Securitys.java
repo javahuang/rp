@@ -18,11 +18,13 @@ public class Securitys extends SecurityUtils{
      * @return
      */
     public static ShiroUser getUser() {
-    	ShiroUser shiroUser=(ShiroUser) getSubject().getPrincipal();
-    	if(shiroUser==null){
+    	//博客部分都是anno系列,所以,此处不能转化为ShiroUser
+    	if((getSubject().getPrincipal()) instanceof ShiroUser){
+    		ShiroUser shiroUser=(ShiroUser) getSubject().getPrincipal();
+    		return shiroUser; 
+    	}else{
     		return new ShiroUser();
     	}
-        return shiroUser; 
     }
 
     /***
