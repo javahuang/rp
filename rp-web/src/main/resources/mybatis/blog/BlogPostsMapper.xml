@@ -16,6 +16,9 @@
     <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
     <result column="post_type" property="postType" jdbcType="VARCHAR" />
     <result column="post_mime_type" property="postMimeType" jdbcType="VARCHAR" />
+    <result column="has_code" property="hasCode" jdbcType="BIT" />
+    <result column="has_pic" property="hasPic" jdbcType="BIT" />
+    <result column="is_reprint" property="isReprint" jdbcType="BIT" />
     <result column="comment_count" property="commentCount" jdbcType="BIGINT" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" extends="BaseResultMap" >
@@ -85,7 +88,7 @@
   <sql id="Base_Column_List" >
     ID, post_author, post_date, post_date_gmt, post_status, comment_status, post_password, 
     post_name, post_modified, post_modified_gmt, post_parent, menu_order, post_type, 
-    post_mime_type, comment_count
+    post_mime_type, has_code, has_pic, is_reprint, comment_count
   </sql>
   <sql id="Blob_Column_List" >
     post_content, post_title, post_excerpt, post_content_filtered
@@ -143,18 +146,20 @@
       post_date_gmt, post_status, comment_status, 
       post_password, post_name, post_modified, 
       post_modified_gmt, post_parent, menu_order, 
-      post_type, post_mime_type, comment_count, 
+      post_type, post_mime_type, has_code, 
+      has_pic, is_reprint, comment_count, 
       post_content, post_title, post_excerpt, 
       post_content_filtered)
     values (#{id,jdbcType=BIGINT}, #{postAuthor,jdbcType=BIGINT}, #{postDate,jdbcType=TIMESTAMP}, 
       #{postDateGmt,jdbcType=TIMESTAMP}, #{postStatus,jdbcType=VARCHAR}, #{commentStatus,jdbcType=VARCHAR}, 
       #{postPassword,jdbcType=VARCHAR}, #{postName,jdbcType=VARCHAR}, #{postModified,jdbcType=TIMESTAMP}, 
       #{postModifiedGmt,jdbcType=TIMESTAMP}, #{postParent,jdbcType=BIGINT}, #{menuOrder,jdbcType=INTEGER}, 
-      #{postType,jdbcType=VARCHAR}, #{postMimeType,jdbcType=VARCHAR}, #{commentCount,jdbcType=BIGINT}, 
+      #{postType,jdbcType=VARCHAR}, #{postMimeType,jdbcType=VARCHAR}, #{hasCode,jdbcType=BIT}, 
+      #{hasPic,jdbcType=BIT}, #{isReprint,jdbcType=BIT}, #{commentCount,jdbcType=BIGINT}, 
       #{postContent,jdbcType=LONGVARCHAR}, #{postTitle,jdbcType=LONGVARCHAR}, #{postExcerpt,jdbcType=LONGVARCHAR}, 
       #{postContentFiltered,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.huang.rp.web.blog.domain.BlogPostsWithBLOBs" >
     insert into blog_posts
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -198,6 +203,15 @@
       </if>
       <if test="postMimeType != null" >
         post_mime_type,
+      </if>
+      <if test="hasCode != null" >
+        has_code,
+      </if>
+      <if test="hasPic != null" >
+        has_pic,
+      </if>
+      <if test="isReprint != null" >
+        is_reprint,
       </if>
       <if test="commentCount != null" >
         comment_count,
@@ -257,6 +271,15 @@
       </if>
       <if test="postMimeType != null" >
         #{postMimeType,jdbcType=VARCHAR},
+      </if>
+      <if test="hasCode != null" >
+        #{hasCode,jdbcType=BIT},
+      </if>
+      <if test="hasPic != null" >
+        #{hasPic,jdbcType=BIT},
+      </if>
+      <if test="isReprint != null" >
+        #{isReprint,jdbcType=BIT},
       </if>
       <if test="commentCount != null" >
         #{commentCount,jdbcType=BIGINT},
@@ -326,6 +349,15 @@
       <if test="record.postMimeType != null" >
         post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
       </if>
+      <if test="record.hasCode != null" >
+        has_code = #{record.hasCode,jdbcType=BIT},
+      </if>
+      <if test="record.hasPic != null" >
+        has_pic = #{record.hasPic,jdbcType=BIT},
+      </if>
+      <if test="record.isReprint != null" >
+        is_reprint = #{record.isReprint,jdbcType=BIT},
+      </if>
       <if test="record.commentCount != null" >
         comment_count = #{record.commentCount,jdbcType=BIGINT},
       </if>
@@ -362,6 +394,9 @@
       menu_order = #{record.menuOrder,jdbcType=INTEGER},
       post_type = #{record.postType,jdbcType=VARCHAR},
       post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
+      has_code = #{record.hasCode,jdbcType=BIT},
+      has_pic = #{record.hasPic,jdbcType=BIT},
+      is_reprint = #{record.isReprint,jdbcType=BIT},
       comment_count = #{record.commentCount,jdbcType=BIGINT},
       post_content = #{record.postContent,jdbcType=LONGVARCHAR},
       post_title = #{record.postTitle,jdbcType=LONGVARCHAR},
@@ -387,6 +422,9 @@
       menu_order = #{record.menuOrder,jdbcType=INTEGER},
       post_type = #{record.postType,jdbcType=VARCHAR},
       post_mime_type = #{record.postMimeType,jdbcType=VARCHAR},
+      has_code = #{record.hasCode,jdbcType=BIT},
+      has_pic = #{record.hasPic,jdbcType=BIT},
+      is_reprint = #{record.isReprint,jdbcType=BIT},
       comment_count = #{record.commentCount,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -434,6 +472,15 @@
       <if test="postMimeType != null" >
         post_mime_type = #{postMimeType,jdbcType=VARCHAR},
       </if>
+      <if test="hasCode != null" >
+        has_code = #{hasCode,jdbcType=BIT},
+      </if>
+      <if test="hasPic != null" >
+        has_pic = #{hasPic,jdbcType=BIT},
+      </if>
+      <if test="isReprint != null" >
+        is_reprint = #{isReprint,jdbcType=BIT},
+      </if>
       <if test="commentCount != null" >
         comment_count = #{commentCount,jdbcType=BIGINT},
       </if>
@@ -467,6 +514,9 @@
       menu_order = #{menuOrder,jdbcType=INTEGER},
       post_type = #{postType,jdbcType=VARCHAR},
       post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      has_code = #{hasCode,jdbcType=BIT},
+      has_pic = #{hasPic,jdbcType=BIT},
+      is_reprint = #{isReprint,jdbcType=BIT},
       comment_count = #{commentCount,jdbcType=BIGINT},
       post_content = #{postContent,jdbcType=LONGVARCHAR},
       post_title = #{postTitle,jdbcType=LONGVARCHAR},
@@ -489,6 +539,9 @@
       menu_order = #{menuOrder,jdbcType=INTEGER},
       post_type = #{postType,jdbcType=VARCHAR},
       post_mime_type = #{postMimeType,jdbcType=VARCHAR},
+      has_code = #{hasCode,jdbcType=BIT},
+      has_pic = #{hasPic,jdbcType=BIT},
+      is_reprint = #{isReprint,jdbcType=BIT},
       comment_count = #{commentCount,jdbcType=BIGINT}
     where ID = #{id,jdbcType=BIGINT}
   </update>

@@ -1,11 +1,15 @@
 package com.huang.rp.web.blog.dao;
 
+import com.huang.rp.common.persistence.MyBatisRepository;
 import com.huang.rp.web.blog.domain.BlogPosts;
 import com.huang.rp.web.blog.domain.BlogPostsExample;
 import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+@MyBatisRepository
 public interface BlogPostsMapper {
     int countByExample(BlogPostsExample example);
 
