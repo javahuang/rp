@@ -123,16 +123,16 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
-       
- 		<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
 
 		<!-- web相关jar包 -->
 		<dependency>
@@ -221,7 +221,7 @@
 			<artifactId>shiro-ehcache</artifactId>
 		</dependency>
 		<!-- SECURITY end -->
-		
+
 		<!--日期美化 -->
 		<dependency>
 			<groupId>org.ocpsoft.prettytime</groupId>
@@ -240,7 +240,7 @@
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 		</dependency>
-		
+
 		<!-- TIMER -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -268,15 +268,47 @@
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 		</dependency>
-		
+
 		<!-- mysql -->
 		<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-		
-		
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+		<!-- 搜索 -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-demos</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- 中文分词 -->
+		<dependency>
+			<groupId>org.wltea</groupId>
+			<artifactId>analyzer</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>com.huang</groupId>
 			<artifactId>rp-common</artifactId>
@@ -343,14 +375,14 @@
 		</plugins>
 		<!-- 能将profile里面定义的property应用到打包后的src/main/resources里面的${}里面 -->
 		<resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 	<profiles>
 		<profile>
@@ -364,12 +396,11 @@
 				<connection.admin.url>
                     <![CDATA[jdbc:mysql://localhost:3306?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8]]>
 				</connection.admin.url>
-				<!-- amp;zeroDateTimeBehavior=convertToNull  解决映射datetime报错的问题
-				http://blog.csdn.net/mcbeath/article/details/9469699 -->
+				<!-- amp;zeroDateTimeBehavior=convertToNull 解决映射datetime报错的问题 http://blog.csdn.net/mcbeath/article/details/9469699 -->
 				<connection.url>
                     <![CDATA[jdbc:mysql://localhost:3306/${db.name}?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull ]]>
 				</connection.url>
-				<connection.username>rp</connection.username><!--开始用root账户一直启动失败  -->
+				<connection.username>rp</connection.username><!--开始用root账户一直启动失败 -->
 				<connection.password>dota8888</connection.password>
 				<jpa.showSql>true</jpa.showSql>
 				<jpa.generateDdl>false</jpa.generateDdl>

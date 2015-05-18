@@ -7927,7 +7927,8 @@ textarea {
 	font-size:2.14285714285714rem;
 	color:#333;
 	font-weight:700;
-	border:none
+	border:none;
+	cursor: pointer;
 }
 #m-sidebar .sidebar-container .logo-box .logo-link:hover {
 	text-decoration:none
@@ -8253,6 +8254,23 @@ textarea {
 }
 #m-post .go-top:hover {
 	color:#676767
+}
+.search{
+	cursor: pointer;
+}
+#search{
+	top: 20px;
+	right: 20px;
+	position:fixed;
+	z-index: 999;
+}
+#search input{
+	margin-right:5px;
+	display: none;
+	width:20px;
+}
+.search:hover{
+	color:#8000ff
 }
 .metadata {
 	overflow:hidden

@@ -126,9 +126,13 @@
 	 	and bpt.type=sp.para_code
 	 	GROUP BY bpt.post_id)tag
 		on bp.ID=tag.post_id
+		where 1=1
 		<if test="tagId!=null and tagId !=''">
-		where tag.post_id is not null
+		and tag.post_id is not null
 		and bp.id in(select post_id from blog_post_terms where term_id=#{tagId})
+		</if>
+		<if test="searchStr!=null and searchStr !=''">
+		and bp.post_content_filtered like #{searchStr}
 		</if>
 		<if test="sidx != null and sidx != ''">
 			order by bp.${sidx}

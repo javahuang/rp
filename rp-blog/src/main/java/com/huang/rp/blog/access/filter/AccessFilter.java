@@ -16,6 +16,7 @@ import com.huang.rp.common.persistence.fliter.QueryFilter;
  */
 public class AccessFilter extends QueryFilter{
 	private String tagId;//标签ID
+	private String searchStr;//搜索关键字
 
 	public String getTagId() {
 		return tagId;
@@ -24,4 +25,14 @@ public class AccessFilter extends QueryFilter{
 	public void setTagId(String tagId) {
 		this.tagId = tagId;
 	}
+
+	public String getSearchStr() {
+		return searchStr;
+	}
+
+	public void setSearchStr(String searchStr) {
+		this.searchStr = searchStr;
+	}
+	
+	
 }

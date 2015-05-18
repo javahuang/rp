@@ -30,4 +30,7 @@ public interface Constants {
 	
 	/**postList分页每页显示条目*/
 	Integer POST_LIST_PAGE_SIZE=10;
+	/**cookie名*/
+	String COOKIE_NAME_SEARCH="search";
+	String COOKIE_NAME_TAG="tag";
 }

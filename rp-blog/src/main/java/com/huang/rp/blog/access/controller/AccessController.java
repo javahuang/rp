@@ -7,6 +7,7 @@ package com.huang.rp.blog.access.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.access.service.AccessService;
 import com.huang.rp.blog.post.domain.BlogPostsWithBLOBs;
+import com.huang.rp.common.Constants;
+import com.huang.rp.common.utils.Encodes;
 import com.huang.rp.common.utils.HttpUtils;
 
 /**
@@ -73,14 +76,39 @@ public class AccessController {
 		return "index";
 	}
 	/**
+	 * 通过cookie的形式传值
+	 * 点击"大黄"会清除保存的cookie
+	 * cookie作用:1.点击标签刷新页面后,能保存之前的标签
+	 * 2.刷新页面之后,搜索的内容依然存在
 	 * 文章的摘要
 	 * @return
 	 */
 	@RequestMapping(value="postList")
-	public String articleExcerptListAccess(AccessFilter filter,Model model){
+	public String articleExcerptListAccess(HttpServletRequest request,AccessFilter filter,Model model){
+		Cookie[]cookies=request.getCookies();
+		if(cookies!=null){
+			for(Cookie cookie:cookies){
+				if(Constants.COOKIE_NAME_SEARCH.equals(cookie.getName()))
+					filter.setSearchStr(Encodes.urlDecode(cookie.getValue()));
+				if(Constants.COOKIE_NAME_TAG.equals(cookie.getName()))
+					filter.setTagId(Encodes.urlDecode(cookie.getValue()));
+			}
+		}
 		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(filter);
 		model.addAttribute("postList", postList);
 		return "index/postlist";
+	}
+	
+	/**
+	 * 实时同步多说的评论
+	 * @param request
+	 * @param filter
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="comment")
+	public void duoshuoComment(HttpServletRequest request){
+		accessService.doComment(request);
 	}
 	
 }
