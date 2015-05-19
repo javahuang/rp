@@ -49,7 +49,6 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
-
 	</mvc:annotation-driven>
 	<mvc:view-controller path="/" view-name="redirect:/article/1"/>
 

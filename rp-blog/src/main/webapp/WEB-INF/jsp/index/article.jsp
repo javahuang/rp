@@ -9,7 +9,7 @@
 			<li class="meta-author"><i class="fa fa-user"></i><span><a
 					style="font-size: 12px;" href="#" title="鹏"><rp:cache attrName="username" key="${article.postAuthor}" cacheName="userCache"></rp:cache></a></span></li>
 			<li class="meta-comments"><i class="fa fa-comments-o"><span><a
-						href="#">查看评论</a></span></i></li>
+						href="javascript:void(0)">查看评论</a></span></i></li>
 		</ul>
 	</div>
 	<div id="post-content" class="post-content" >

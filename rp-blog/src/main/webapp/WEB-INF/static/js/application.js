@@ -41,6 +41,11 @@ define(function(require,exports){
 	    	$('html, body').animate({scrollTop:0}, 500); 
 	    	return false;
 	  	});
+	  	$("#post-6 .meta-comments").click(function(){
+	  		var scrollTop=$('html, body').height();
+	    	$('html, body').animate({scrollTop:scrollTop}, 500); 
+	    	return false;
+	  	});
 	  	
 		$(".fa-search").click(function(e){//搜索
 			e.stopPropagation();
