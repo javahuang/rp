@@ -131,8 +131,15 @@
 		and tag.post_id is not null
 		and bp.id in(select post_id from blog_post_terms where term_id=#{tagId})
 		</if>
+		<if test="tags!=null and tags !=''">
+		and tag.post_id is not null
+		and bp.id in(select post_id from blog_post_terms where term_id in (${tags}))
+		</if>
 		<if test="searchStr!=null and searchStr !=''">
 		and bp.post_content_filtered like #{searchStr}
+		</if>
+		<if test="users!=null and users !=''">
+		and bp.post_author in (${users})
 		</if>
 		<if test="sidx != null and sidx != ''">
 			order by bp.${sidx}

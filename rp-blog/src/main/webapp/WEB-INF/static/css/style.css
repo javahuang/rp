@@ -8646,3 +8646,6 @@ h2,h3 {
 .post-title a{
 	cursor: pointer;
 }
+#timeline input{
+	display: none;
+}

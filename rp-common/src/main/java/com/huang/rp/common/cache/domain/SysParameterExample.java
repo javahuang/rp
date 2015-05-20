@@ -384,52 +384,52 @@ public class SysParameterExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightEqualTo(Boolean value) {
+        public Criteria andWeightEqualTo(Byte value) {
             addCriterion("weight =", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotEqualTo(Boolean value) {
+        public Criteria andWeightNotEqualTo(Byte value) {
             addCriterion("weight <>", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThan(Boolean value) {
+        public Criteria andWeightGreaterThan(Byte value) {
             addCriterion("weight >", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andWeightGreaterThanOrEqualTo(Byte value) {
             addCriterion("weight >=", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThan(Boolean value) {
+        public Criteria andWeightLessThan(Byte value) {
             addCriterion("weight <", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightLessThanOrEqualTo(Boolean value) {
+        public Criteria andWeightLessThanOrEqualTo(Byte value) {
             addCriterion("weight <=", value, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightIn(List<Boolean> values) {
+        public Criteria andWeightIn(List<Byte> values) {
             addCriterion("weight in", values, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotIn(List<Boolean> values) {
+        public Criteria andWeightNotIn(List<Byte> values) {
             addCriterion("weight not in", values, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightBetween(Boolean value1, Boolean value2) {
+        public Criteria andWeightBetween(Byte value1, Byte value2) {
             addCriterion("weight between", value1, value2, "weight");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andWeightNotBetween(Byte value1, Byte value2) {
             addCriterion("weight not between", value1, value2, "weight");
             return (Criteria) this;
         }

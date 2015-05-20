@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/index/header.jsp"%>
+</head>
 <body class="home-template  pace-done">
 	<div class="pace  pace-inactive">
 		<div class="pace-activity"></div>
@@ -70,7 +71,9 @@ require.config({
 		'app':'js/application',
 		'jquery':'js/jquery-1.10.1.min',//后面不能带后缀
 		'nicescroll':'comp/nicescroll/jquery.nicescroll.min',
-		'cookie':'js/jquery.cookie'
+		'cookie':'js/jquery.cookie',
+		'timeline':'comp/timeline/js/timeliner',
+		'tm':'js/timeline'
 	},
 	waitSeconds: 15,
 	map:{
@@ -82,10 +85,13 @@ require.config({
 	shim : {
 		cookie:{
 			 deps: ['jquery'],
+		},
+		timeline:{
+			 deps: ['jquery'],
 		}
         //'app': ['css! css/test.css']
     }
-})
+}) 
 require(['app'],function(app){
 	app.init();
 })

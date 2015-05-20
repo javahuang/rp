@@ -38,7 +38,7 @@ public class XmlParser {
 //		Matcher mat = pat.matcher(xml);  
 //		boolean rs = mat.find();
 //		System.out.println(rs);
-		String path="F:\\杰之能\\data-revover\\15年5月14日";
+		String path="F:\\杰之能\\data-revover\\15年5月20日";
 		String descpath="F:\\杰之能\\data-revover\\导出";
 		String logname="F:\\杰之能\\data-revover\\导出\\log.txt";
 		regist(path,descpath,false,3,logname);

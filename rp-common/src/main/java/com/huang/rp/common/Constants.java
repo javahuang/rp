@@ -33,4 +33,6 @@ public interface Constants {
 	/**cookie名*/
 	String COOKIE_NAME_SEARCH="search";
 	String COOKIE_NAME_TAG="tag";
+	String COOKIE_NAME_USER="user";
+	
 }

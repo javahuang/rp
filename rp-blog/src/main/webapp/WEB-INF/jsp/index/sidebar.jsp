@@ -5,7 +5,8 @@
 		<p class="logo-desc">Thoughts, stories and ideas.</p>
 	</div>
 	<ul class="site-nav-box row">
-		<li class="col-md-12 col-xs-4"><a href="${ctx }" class="current_nav">首页</a></li>
+		<li class="col-md-12 col-xs-4"><a href="${ctx }/article/welcome" class="current_nav">首页</a></li>
+		<li class="col-md-12 col-xs-4"><a href="${ctx }/timeline">时光机</a></li>
 		<li class="col-md-12 col-xs-4"><a href="${ctx }/article/aboutme">关于</a></li>
 		<li class="col-md-12 col-xs-4"><a target="_blank"
 			href="mailto:javahrp@gmail.com">联系</a></li>

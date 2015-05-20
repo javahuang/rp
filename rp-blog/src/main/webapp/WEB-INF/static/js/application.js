@@ -3,7 +3,7 @@
  */
 /*分页*/
 define(function(require,exports){
-	//初始化操作
+	//博客初始化操作
 	exports.init=function(){
 		eventInit();
 		nicescrollInit();
@@ -92,7 +92,7 @@ define(function(require,exports){
 		 */
 		function refreshPostList(){//刷新导航栏  
 			$.post(ctx+"/postList",function(html){
-				$("#m-post-list article").remove();
+				$("#timeline").remove();
 				$(".pagination").before(html);
 				var getRows=parseInt($("#get-rows").val());//获取的行数
 				$(".pagination .page-number").text("共 "+getRows+" 条");

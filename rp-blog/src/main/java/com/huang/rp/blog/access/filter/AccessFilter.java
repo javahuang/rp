@@ -17,7 +17,10 @@ import com.huang.rp.common.persistence.fliter.QueryFilter;
 public class AccessFilter extends QueryFilter{
 	private String tagId;//标签ID
 	private String searchStr;//搜索关键字
-
+	boolean highLight=false;//搜索文本是否高亮显示
+	private String tags;//标签集合 =1,2,3
+	private String users;//用户集合 =1,2,3
+	
 	public String getTagId() {
 		return tagId;
 	}
@@ -32,6 +35,30 @@ public class AccessFilter extends QueryFilter{
 
 	public void setSearchStr(String searchStr) {
 		this.searchStr = searchStr;
+	}
+
+	public boolean isHighLight() {
+		return highLight;
+	}
+
+	public void setHighLight(boolean highLight) {
+		this.highLight = highLight;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public String getUsers() {
+		return users;
+	}
+
+	public void setUsers(String users) {
+		this.users = users;
 	}
 	
 	

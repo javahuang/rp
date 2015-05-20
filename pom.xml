@@ -116,7 +116,7 @@
 		<jcaptcha.version>2.0-alpha-1</jcaptcha.version>
 
 		<jsoup.version>1.7.3</jsoup.version>
-
+		<lucene.version>5.1.0</lucene.version>
 		<mysql.version>5.1.34</mysql.version>
 	</properties>
 
@@ -475,7 +475,42 @@
 				<artifactId>dozer-spring</artifactId>
 				<version>${dozer.version}</version>
 			</dependency>
+			<!-- 搜索 -->
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queryparser</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers-common</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-demos</artifactId>
+				<version>3.0.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers</artifactId>
+				<version>3.6.2</version>
+			</dependency>
+
+			<!-- 中文分词 -->
+			<dependency>
+				<groupId>org.wltea</groupId>
+				<artifactId>analyzer</artifactId>
+				<version>5.0</version>
+			</dependency>
 		</dependencies>
+
 	</dependencyManagement>
 
 

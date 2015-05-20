@@ -9,7 +9,7 @@ public class SysParameter {
 
     private String paraCode;
 
-    private Boolean weight;
+    private Byte weight;
 
     private Integer paraGroup;
 
@@ -47,11 +47,11 @@ public class SysParameter {
         this.paraCode = paraCode;
     }
 
-    public Boolean getWeight() {
+    public Byte getWeight() {
         return weight;
     }
 
-    public void setWeight(Boolean weight) {
+    public void setWeight(Byte weight) {
         this.weight = weight;
     }
 

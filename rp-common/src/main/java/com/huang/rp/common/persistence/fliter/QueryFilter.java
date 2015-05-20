@@ -20,7 +20,7 @@ import com.huang.rp.common.persistence.domain.PaginationContext;
 public class QueryFilter {
 
 	private Integer page = 1;// 当前页码
-	private Integer rows = 15;// 每页记录数
+	private Integer rows;// 每页记录数
 	private Integer records;// 总记录数
 	private Integer total;// 页码总数
 	

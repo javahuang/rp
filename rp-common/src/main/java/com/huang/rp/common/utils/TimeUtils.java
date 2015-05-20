@@ -5,6 +5,8 @@
  */
 package com.huang.rp.common.utils;
 
+import java.util.Locale;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -58,5 +60,9 @@ public class TimeUtils {
 		   sb.append(dt.getYear()).append(dt.getMonthOfYear()).append(dt.getDayOfMonth());
 		   return sb.toString();
 	   }
-
+	   //@Test
+	   public void test(){
+		   DateTime dt=new DateTime();
+		   System.out.println(dt.monthOfYear().getAsText(Locale.ENGLISH));
+	   }
 }

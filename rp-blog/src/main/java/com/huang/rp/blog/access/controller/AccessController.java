@@ -6,6 +6,7 @@
 package com.huang.rp.blog.access.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -16,13 +17,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.access.service.AccessService;
 import com.huang.rp.blog.post.domain.BlogPostsWithBLOBs;
 import com.huang.rp.common.Constants;
+import com.huang.rp.common.cache.domain.SysParameter;
 import com.huang.rp.common.utils.Encodes;
 import com.huang.rp.common.utils.HttpUtils;
+import com.huang.rp.sys.rbac.domain.SysUser;
 
 /**
  * 博客入口
@@ -94,6 +99,8 @@ public class AccessController {
 					filter.setTagId(Encodes.urlDecode(cookie.getValue()));
 			}
 		}
+		filter.setSidx("id");//最近的文章优先显示
+		filter.setSord("desc");
 		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(filter);
 		model.addAttribute("postList", postList);
 		return "index/postlist";
@@ -111,4 +118,54 @@ public class AccessController {
 		accessService.doComment(request);
 	}
 	
+	/**
+	 * 时间轴
+	 * @return
+	 */
+	@RequestMapping(value="timeline")
+	public ModelAndView timeline(){
+		ModelAndView mav=new ModelAndView();
+		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(null);
+		mav.addObject("timeline", timeline);
+		mav.setViewName("timeline");
+		return mav;
+	}//
+	
+	/**
+	 * 时光机搜索功能
+	 * @param filter
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="timelineSearch")
+	public String timelineSearch(AccessFilter filter,Model model,HttpServletRequest request){
+		Cookie[]cookies=request.getCookies();
+		if(cookies!=null){
+			for(Cookie cookie:cookies){
+				if(Constants.COOKIE_NAME_SEARCH.equals(cookie.getName())){
+					filter.setHighLight(true);
+					filter.setSearchStr(Encodes.urlDecode(cookie.getValue()));
+				}
+				if(Constants.COOKIE_NAME_TAG.equals(cookie.getName()))
+					filter.setTagId(Encodes.urlDecode(cookie.getValue()));
+			}
+		}
+		//判断cookie是否有用户信息
+		SysUser user=accessService.getUserInfoByCookie(request);
+		if(user!=null)
+			filter.setUsers(String.valueOf(user.getId()));
+		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(filter);
+		model.addAttribute("timeline", timeline);
+		return "timeline/posttimeline-wrapper";
+	}
+	/**
+	 * 标签云初始化
+	 * @return
+	 */
+	@RequestMapping(value="getTags")
+	@ResponseBody
+	public List<SysParameter>tagCloudInit(HttpServletRequest request){
+		return accessService.getTagCloud(request);
+	}
 }
