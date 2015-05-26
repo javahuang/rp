@@ -1,11 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <div class="sidebar-container">
 	<div class="logo-box">
-		<a  class="logo-link" title="Thoughts, stories and ideas.">大黄</a>
+	<%String url=request.getRequestURL().toString();
+		if(url.toLowerCase().contains("rencl")){
+	%>
+	<a  class="logo-link" title="Thoughts, stories and ideas.">常龙</a>
+	<%}else{ %>
+	<a  class="logo-link" title="Thoughts, stories and ideas.">大黄</a>
+	<%} %>
+		
 		<p class="logo-desc">Thoughts, stories and ideas.</p>
 	</div>
 	<ul class="site-nav-box row">
 		<li class="col-md-12 col-xs-4"><a href="${ctx }/article/welcome" class="current_nav">首页</a></li>
+		
 		<li class="col-md-12 col-xs-4"><a href="${ctx }/timeline">时光机</a></li>
 		<li class="col-md-12 col-xs-4"><a href="${ctx }/article/aboutme">关于</a></li>
 		<li class="col-md-12 col-xs-4"><a target="_blank"

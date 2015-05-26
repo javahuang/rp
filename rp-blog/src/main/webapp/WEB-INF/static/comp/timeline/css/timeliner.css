@@ -60,7 +60,7 @@
   white-space: nowrap;
 }
 .timeline-series dt a {
-  color: #EF2956;
+  color: #333333;
   cursor: pointer;
 }
 .timeline-series dt a .closed {
@@ -80,7 +80,7 @@
 }
 
 .timeline-series dd h3 {
-  color: #C84BBD;
+  color: #333333;
   clear: both;
   float: left;
   font-size: 1.5em;
@@ -88,7 +88,7 @@
   white-space: nowrap;
 }
 .timeline-series dd h3 span{
-  color: #C84BBD;
+  color: #333333;
   font-size: 1.1em;
   font-weight:bold;
   font-family:

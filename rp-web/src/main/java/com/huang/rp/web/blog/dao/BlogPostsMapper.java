@@ -1,13 +1,14 @@
 package com.huang.rp.web.blog.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.huang.rp.common.persistence.MyBatisRepository;
 import com.huang.rp.web.blog.domain.BlogPosts;
 import com.huang.rp.web.blog.domain.BlogPostsExample;
 import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
-
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
+import com.huang.rp.web.blog.filter.BlogPostsFilter;
 
 @MyBatisRepository
 public interface BlogPostsMapper {
@@ -38,4 +39,7 @@ public interface BlogPostsMapper {
     int updateByPrimaryKeyWithBLOBs(BlogPostsWithBLOBs record);
 
     int updateByPrimaryKey(BlogPosts record);
+    
+    /**页面显示列表查询*/
+    List<BlogPostsWithBLOBs> selectByFilterWithBLOBs(BlogPostsFilter filter);
 }

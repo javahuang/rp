@@ -21,13 +21,21 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baidu.ueditor.MyActionEnter;
 import com.google.common.collect.Maps;
+import com.huang.rp.common.cache.domain.SysParameter;
+import com.huang.rp.common.persistence.domain.Pagination;
+import com.huang.rp.common.persistence.domain.PaginationContext;
+import com.huang.rp.common.persistence.fliter.QueryFilter;
 import com.huang.rp.common.web.controller.BaseController;
 import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
+import com.huang.rp.web.blog.domain.TagParameter;
+import com.huang.rp.web.blog.filter.BlogPostsFilter;
 import com.huang.rp.web.blog.service.BlogService;
 import com.huang.rp.web.blog.service.FileService;
 
@@ -111,13 +119,73 @@ public class BlogController extends BaseController {
 		String[]tags=request.getParameterValues("tags");
 		try{
 			blogService.addBlogPost(blogPost,tags);
-			//List<Map<String,String>> fileInfos=fleService.uploadImage(request);
-			//state.putAll(fileInfos.get(0));
 			state.put("state", "SUCCESS");
 		}catch(Exception e){
 			state.put("state", "上传失败");
 			e.printStackTrace();
 		}
 		return new ResponseEntity<Map<String,String>>(state, HttpStatus.OK);
+	}
+	
+	/**
+	 * 跳转到模块列表
+	 * @param filter
+	 * @return
+	 */
+	@RequestMapping("list_{moduleName}")
+	public String listBlogPost(@PathVariable String moduleName,BlogPostsFilter filter) {
+		return "blog/list_"+moduleName;
+	}
+	
+	@RequestMapping("postGridInit")
+	@ResponseBody
+	public Pagination<BlogPostsWithBLOBs> gridinit(BlogPostsFilter filter) {
+		List<BlogPostsWithBLOBs> cacheList = blogService.listBlogPost(filter);
+		Pagination<BlogPostsWithBLOBs> response = PaginationContext.getPagination();
+		response.setRows(cacheList);
+		return response;
+	}
+	/**
+	 * 两种不同的跳转到blog/init.jsp也蛮方式
+	 * 这个是编辑,另外一个是初始化
+	 */
+	@RequestMapping(value="blogEdit")
+	public String blogEdit(Long id,Model model) {
+		BlogPostsWithBLOBs blogPost=blogService.selectBlogPost(id);
+		model.addAttribute("post", blogPost);
+		return "blog/init";
+	}
+	
+	@RequestMapping(value="getBlogContent")
+	@ResponseBody
+	public BlogPostsWithBLOBs getBlogContent(Long id) {
+		BlogPostsWithBLOBs blogPost=blogService.selectBlogPost(id);
+		return blogPost;
+	}
+	
+	@RequestMapping(value="tagForm")
+	public String tagForm(){
+		return "blog/form_tag";
+	}
+	
+	@RequestMapping("tagGridInit")
+	@ResponseBody
+	public Pagination<TagParameter> tagGridinit(QueryFilter filter) {
+		List<TagParameter> cacheList = blogService.listBlogTag(filter);
+		Pagination<TagParameter> response = PaginationContext.getPagination();
+		response.setRows(cacheList);
+		return response;
+	}
+	
+	@RequestMapping(value="addTag")
+	@ResponseBody
+	public String addTag(SysParameter para){
+		try{
+			blogService.addTag(para);
+			return "success";
+		}catch(Exception e){
+			e.printStackTrace();
+			return "添加失败";
+		}
 	}
 }

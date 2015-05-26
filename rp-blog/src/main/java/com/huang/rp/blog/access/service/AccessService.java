@@ -26,6 +26,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.huang.rp.blog.access.domain.CookieVO;
 import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.post.dao.BlogPostsMapper;
 import com.huang.rp.blog.post.domain.BlogPostsExample;
@@ -35,6 +36,7 @@ import com.huang.rp.common.cache.dao.SysParameterMapper;
 import com.huang.rp.common.cache.domain.SysParameter;
 import com.huang.rp.common.cache.domain.SysParameterExample;
 import com.huang.rp.common.cache.domain.SysParameterExample.Criteria;
+import com.huang.rp.common.exception.ServiceException;
 import com.huang.rp.common.utils.Encodes;
 import com.huang.rp.common.utils.HttpUtils;
 import com.huang.rp.sys.rbac.dao.SysUserMapper;
@@ -62,21 +64,38 @@ public class AccessService {
 	 * 获取文章
 	 * @param post
 	 */
-	public BlogPostsWithBLOBs getArticle(BlogPostsWithBLOBs post) {
+	public BlogPostsWithBLOBs getArticle(HttpServletRequest request,BlogPostsWithBLOBs post) {
+		CookieVO cookieVO=parseCookie(request);
 		if(StringUtils.isNotBlank(post.getPostName())){
 			BlogPostsExample exp=new BlogPostsExample();
 			exp.createCriteria().andPostNameEqualTo(post.getPostName());
 			List<BlogPostsWithBLOBs> postList=postMapper.selectByExampleWithBLOBs(exp);
 			if(postList.size()==1){
 				post=postList.get(0);
-				return post;
+			}else{
+				throw new ServiceException("500");
 			}
 		}
 		long id=0;
 		if((id=post.getId())!=0){
 			post=postMapper.selectByPrimaryKey(id);
 		}
-		return post;
+		if(post.getPostAuthor()==null)
+			throw new ServiceException("500");
+		//鼻子文章不做加密
+		if(request.getRequestURL().toString().toLowerCase().contains(Constants.WEB_RCL_URL)){
+			return post;
+		}
+		if(StringUtils.isBlank(post.getPostPassword()))
+			return post;
+		//密码不为空  且cookie post密码和文章post密码不一致 或 userid和文章id不一致将抛出异常
+		if(StringUtils.isNotBlank(post.getPostPassword())&&
+				(post.getPostPassword().equals(cookieVO.getPostPassword())||//用户输入了解锁文章密码
+						(post.getPostAuthor().equals(cookieVO.getUserId())&&StringUtils.isNotBlank(cookieVO.getUserPassword()))))//用户输入了自己的密码
+						{//作者一致 但是没有输入密码
+			return post;
+		}
+		throw new ServiceException("500");
 	}
 
 	/**
@@ -84,18 +103,25 @@ public class AccessService {
 	 * @param filter
 	 * @return
 	 */
-	public List<BlogPostsWithBLOBs> getArticleExcerptListByFilter(AccessFilter filter) {
+	public List<BlogPostsWithBLOBs> getArticleExcerptListByFilter(HttpServletRequest request,AccessFilter filter) {
 		if(filter==null){
 			filter=new AccessFilter();
 			filter.setSidx("id");//最近的文章优先显示
 			filter.setSord("desc");
 		}
+		CookieVO cookieVO=parseCookie(request);
+		filter.setSearchStr(cookieVO.getSearch());
+		filter.setTagId(cookieVO.getTag());
+		filter.setUserId(cookieVO.getUserId());
 		List<String> searchs=doSearchBefore(filter);
-		//高亮显示搜索后的结果
+		if(request.getRequestURL().toString().toLowerCase().contains(Constants.WEB_RCL_URL)){
+			filter.setUserId(Constants.WEB_RCL_USER_ID);
+		}
 		if(filter.getRows()==null)
 			filter.setRows(Constants.POST_LIST_PAGE_SIZE);
 		List<BlogPostsWithBLOBs> excerptList=postMapper.selectArticleExcerptByFilter(filter);
 		if(StringUtils.isNotBlank(filter.getSearchStr())&&filter.isHighLight()){
+			///高亮显示搜索后的结果
 			doSearchAfter(excerptList,searchs);
 		}
 		return excerptList;
@@ -186,7 +212,7 @@ public class AccessService {
 	}
 	
 	/**
-	 * 获取
+	 * 获取关键词左右的一段字符串
 	 * @param srcStr
 	 * @param index
 	 * @param sub
@@ -236,13 +262,18 @@ public class AccessService {
 	 * 获取时间线列表
 	 * @return
 	 */
-	public Map<String,Map<String,List<BlogPostsWithBLOBs>>> getTimelineList(AccessFilter filter) {
+	public Map<String,Map<String,List<BlogPostsWithBLOBs>>> getTimelineList(HttpServletRequest request,AccessFilter filter) {
 		if(filter==null)
 			filter=new AccessFilter();
 		filter.setRows(Integer.MAX_VALUE-1);
-		filter.setSord("asc");
+		filter.setSord("desc");
 		filter.setSidx("id");
-		List<BlogPostsWithBLOBs> excerptList=getArticleExcerptListByFilter(filter);
+		CookieVO cookieVO=parseCookie(request);
+		filter.setSearchStr(cookieVO.getSearch());
+		filter.setTagId(cookieVO.getTag());
+		filter.setUserId(cookieVO.getUserId());
+		filter.setHighLight(true);
+		List<BlogPostsWithBLOBs> excerptList=getArticleExcerptListByFilter(request,filter);
 		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=Maps.newLinkedHashMap();
 		for(BlogPostsWithBLOBs spost:excerptList){
 			Date postDate=spost.getPostDate();
@@ -292,52 +323,124 @@ public class AccessService {
 		SysParameterExample sysParameter=new SysParameterExample();
 		Criteria sysParaCa=sysParameter.createCriteria();
 		//读取user cookie 获取当前正在使用的用户 目前设置para_group和用户id对应,目的是将标签和用户关联
-		SysUser user=getUserInfoByCookie(request);
-		if(user!=null)
-			sysParaCa.andParaGroupEqualTo(user.getId().intValue());
+		CookieVO cookieVO=parseCookie(request);
+		if(cookieVO.getUserId()!=null){
+			sysParaCa.andParaGroupEqualTo(cookieVO.getUserId().intValue());
+		}
+		//从rencl.me域名跳转的只显示他自己的标签
+		if(request.getRequestURL().toString().toLowerCase().contains(Constants.WEB_RCL_URL)){
+			sysParaCa.andParaGroupEqualTo(Constants.WEB_RCL_USER_ID.intValue());
+		}
 		List<SysParameter> tagList=sysParameterMapper.selectByExample(sysParameter);
 		return tagList;
 	}
 	
+//	/**
+//	 * $user username 可以查看该用户下未加密文章
+//	 * $user username -p password 可以查看该用户下所有文章
+//	 * $password 查看该密码对应的文章
+//	 * 从cookie获取用户信息
+//	 * @param request
+//	 * @return
+//	 */
+//	public SysUser getUserInfoByCookie(HttpServletRequest request){
+//		String userCookie=getCookieValue(request,Constants.COOKIE_NAME_USER);//user cookie
+//		if(StringUtils.isNotBlank(userCookie)){
+//			if(userCookie.startsWith("$user")){
+//				String password="";
+//				//判断用户输入是否包含 -p选项
+//				if(StringUtils.containsIgnoreCase(userCookie, "-p")){
+//					password=StringUtils.substringAfterLast(userCookie, "-p");
+//				}
+//				userCookie=userCookie.replace("$user", "").trim();
+//				if(StringUtils.isNotBlank(userCookie)){
+//					SysUserExample userExample=new SysUserExample();
+//					userExample.createCriteria().andUsernameEqualTo(userCookie);
+//					List<SysUser> users=sysUserMapper.selectByExample(userExample);
+//					if(users.size()==1){
+//						//如果用户输入密码跟实际密码不一致,还只显示用户未加密文章
+//						SysUser user=users.get(0);
+//						if(user.getPassword().equalsIgnoreCase(password)){
+//							return user;
+//						}else{
+//							user.setPassword(null);
+//							return user;
+//						}
+//					}
+//				}
+//					
+//			}
+//		}
+//		return null;
+//	}
+//	/**
+//	 * 获取cookie信息
+//	 * @param request
+//	 * @param cookieName
+//	 * @return
+//	 */
+//	private String getCookieValue(HttpServletRequest request,String cookieName){
+//		Cookie[]cookies=request.getCookies();
+//		if(cookies!=null){
+//			for(Cookie cookie:cookies){
+//				if(cookieName.equals(cookie.getName())){
+//					String value=Encodes.urlDecode(cookie.getValue());//必须是 $user username形式
+//					return value;
+//				}
+//			}
+//		}
+//		return null;
+//	}
 	/**
-	 * 从cookie获取用户信息
+	 * 将cookie解析成CookieVO对象
 	 * @param request
 	 * @return
 	 */
-	public SysUser getUserInfoByCookie(HttpServletRequest request){
-		String userCookie=getCookieValue(request,Constants.COOKIE_NAME_USER);
-		if(StringUtils.isNotBlank(userCookie)){
-			if(userCookie.startsWith("$user")){
-				userCookie=userCookie.replace("$user", "").trim();
-				if(StringUtils.isNotBlank(userCookie)){
-					SysUserExample userExample=new SysUserExample();
-					userExample.createCriteria().andUsernameEqualTo(userCookie);
-					List<SysUser> user=sysUserMapper.selectByExample(userExample);
-					if(user.size()==1){
-						return user.get(0);
-					}
-				}
-					
-			}
-		}
-		return null;
-	}
-	/**
-	 * 获取cookie信息
-	 * @param request
-	 * @param cookieName
-	 * @return
-	 */
-	private String getCookieValue(HttpServletRequest request,String cookieName){
+	public CookieVO parseCookie(HttpServletRequest request){
 		Cookie[]cookies=request.getCookies();
+		CookieVO cookieVO=new CookieVO();
 		if(cookies!=null){
 			for(Cookie cookie:cookies){
-				if(cookieName.equals(cookie.getName())){
-					String value=Encodes.urlDecode(cookie.getValue());//必须是 $user username形式
-					return value;
+				//标签cookie
+				String cName=cookie.getName();
+				String cValue=Encodes.urlDecode(cookie.getValue());
+				if(cName.equalsIgnoreCase(Constants.COOKIE_NAME_TAG)){
+					cookieVO.setTag(cValue);
+				}
+				if(cName.equalsIgnoreCase(Constants.COOKIE_NAME_USER)){
+					String userName=null;
+					String userPassword=null;
+					if(StringUtils.containsIgnoreCase(cValue, "-p")){
+						userPassword=StringUtils.substringAfterLast(cValue.toLowerCase(), "-p").trim();
+						userName=StringUtils.substringBefore(cValue.toLowerCase(), "-p").replace("$user", "").trim();
+					}else{
+						userName=cValue.toLowerCase().replace("$user", "").trim();
+					}
+					SysUserExample userExample=new SysUserExample();
+					userExample.createCriteria().andUsernameEqualTo(userName);
+					List<SysUser> users=sysUserMapper.selectByExample(userExample);
+					if(users.size()==1){
+						//如果用户输入密码跟实际密码不一致,还只显示用户未加密文章
+						SysUser user=users.get(0);
+						if(user.getPassword().equalsIgnoreCase(userPassword)){
+							cookieVO.setUserName(userName);
+							cookieVO.setUserPassword(userPassword);
+						}else{
+							cookieVO.setUserName(userName);
+						}
+						cookieVO.setUserId(user.getId());//此处设置id是为了在显示文章时和postAuthor比对
+					}
+				}
+				if(cName.equalsIgnoreCase(Constants.COOKIE_NAME_PASSWORD)){
+					cookieVO.setPostPassword(cValue.toLowerCase().replace("$password", "").trim());
+				}
+				if(cName.equalsIgnoreCase(Constants.COOKIE_NAME_SEARCH)){
+					cookieVO.setSearch(cValue);
 				}
 			}
 		}
-		return null;
+		return cookieVO;
 	}
+	
+	
 }

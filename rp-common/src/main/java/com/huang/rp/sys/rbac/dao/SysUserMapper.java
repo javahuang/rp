@@ -33,7 +33,7 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
     /**查询用户权限*/
-    List<Map> selectUserPermissionByid(@Param("record") Long record);
+    List<Map> selectUserPermissionByid(@Param("userId") Long userId);
     /**查询用户角色*/
-    List<Map> selectUserRoleByid(@Param("record") Long record);
+    List<Map> selectUserRoleByid(@Param("userId") Long userId);
 }

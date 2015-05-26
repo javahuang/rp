@@ -1,3 +1,4 @@
+<%@tag import="com.huang.rp.common.utils.Securitys"%>
 <%@ tag pageEncoding="UTF-8" description="标签"%>
 <%@ tag import="java.util.*"%>
 <%@ tag import="com.huang.rp.common.cache.CacheUtils"%>
@@ -10,11 +11,12 @@
 	Iterator<SysParameter> tag=tagsList.iterator();
 	while(tag.hasNext()){
 		SysParameter sp=tag.next();
+		if(sp.getParaGroup().longValue()==Securitys.getUserId()){
 		%>
 		<label class="checkbox-inline"> <input type="checkbox"
 		id="tag<%=sp.getCode()%>" name="tags" value="<%=sp.getCode()%>"><%=sp.getValue() %>
 		</label>
 	<%	
-	}
+		}}
 	%>
 </div>

@@ -7745,7 +7745,7 @@ figcaption,small {
 }
 b,strong {
 	font-weight:700;
-	color:#000
+	/**color:#000; */
 }
 [draggable] {
 	cursor:move

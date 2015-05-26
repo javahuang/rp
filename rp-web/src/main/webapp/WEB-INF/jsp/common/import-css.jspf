@@ -24,5 +24,6 @@
 <link rel="stylesheet" href="${ctx}/static/comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid/css/ui.jqgrid.css" />
 <link rel="stylesheet" href="${ctx}/static/comp/jquery-ui-bootstrap3/third-party/jqGrid/jqGrid.overrides.css">
 -->
-<link type="text/css" rel="stylesheet" href="${ctx }/static/comp/jqgrid/4.5.4/css/ui.jqgrid.css" />   
-
+<link type="text/css" rel="stylesheet" href="${ctx }/static/comp/jqgrid/4.5.4/css/ui.jqgrid.css" />
+<!-- 上面的jquery-ui和下面的这个是有区别的,上面是与bootstrap版本,下面是纯jquery-ui版本 -->
+<link type="text/css" href="${ctx}/static/comp/jquery/css/jquery-ui-1.10.3.custom.css?7" rel="stylesheet"/>

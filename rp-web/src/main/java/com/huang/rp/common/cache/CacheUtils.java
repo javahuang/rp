@@ -147,4 +147,8 @@ public class CacheUtils {
 		return ReflectionUtils.getFieldValue(getCacheValue(cacheName, key, t),
 				attrName);
 	}
+	
+	public static void setCallValue(String cacheName,Object key,Object value){
+		getCacheManager().getCache(cacheName).put(new Element(key, value));
+	}
 }

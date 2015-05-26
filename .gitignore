@@ -1,6 +1,7 @@
 .classpath
 .project
-.war
+war/
 .pom
 .settings/
 target/
+node_modules/

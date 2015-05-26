@@ -63,9 +63,9 @@ public class LoginController {
 	public String regist(SysUser user,HttpServletResponse response,HttpServletRequest request){
 		try{
 			/**目前不开放注册操作*/
-		//	rbacService.addUser(user);
+			rbacService.addUser(user);
 			//注册完毕执行登录操作
-		//	authcFilter.executeLogin(request, response);
+			authcFilter.executeLogin(request, response);
 			return "success";
 		}catch(Exception e){
 			return "fail";

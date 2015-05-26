@@ -93,20 +93,26 @@ define(function(require,exports){
 							if(searchStr.indexOf("$user")!=-1){//将user添加到cookie
 								var dateObj=new Date();
 								dateObj.setTime(dateObj.getTime());
-								if(searchStr.indexOf("all")>1){//输入 $user all 显示所有用户的标签
-									$.removeCookie("user",{expires:dateObj,path:"/"});//删除user标签
-									initJqcloud();//初始化标签云
-								}else{
-									dateObj.setTime(dateObj.getTime()+30*24*60*1000);//默认将搜索内容保持一个月
-									$.cookie("user",searchStr,{expires:dateObj,path:"/"});
-									initJqcloud();//初始化标签云
-								}
+								dateObj.setTime(dateObj.getTime()+30*24*60*1000);//默认将搜索内容保持一个月
+								$.cookie("user",searchStr,{expires:dateObj,path:"/"});
+								initJqcloud();//初始化标签云
+							}else if(searchStr.indexOf("$password")!=-1){//查看密码对应的文章
+								var dateObj=new Date();
+								dateObj.setTime(dateObj.getTime());
+								dateObj.setTime(dateObj.getTime()+24*60*1000);//默认将搜索内容保持一天
+								$.cookie("pwd",searchStr,{expires:dateObj,path:"/"});
+							}else if(searchStr.indexOf("$all")!=-1){//清除所有cookie
+								var dateObj=new Date();
+								$.removeCookie("user",{expires:dateObj,path:"/"});//删除user标签
+								$.removeCookie("pwd",{expires:dateObj,path:"/"});//删除pwd标签
+								$.removeCookie("search",{expires:dateObj,path:"/"});//删除search标签
+								initJqcloud();//初始化标签云
 							}else{//执行搜索操作
 								var dateObj=new Date();
 								dateObj.setTime(dateObj.getTime()+5*60*1000);//默认将搜索内容保持五分钟
 								$.cookie("search",searchStr,{expires:dateObj,path:"/"});
-								refreshTimeline();
 							}
+							refreshTimeline();//刷新时间线
 						}else{
 							return;
 						}
@@ -135,7 +141,6 @@ define(function(require,exports){
 		 */
 		function refreshTimeline(){//刷新时间轴
 			var elt = $('#taginput'),tags=elt.val();
-			console.log(tags)
 			$.post(ctx+"/timelineSearch",{tags:tags},function(html){
 				$(".timeline-wrapper").remove();
 				$("#clear").after(html);

@@ -15,11 +15,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.huang.rp.common.Constants;
+import com.huang.rp.common.cache.CacheUtils;
+import com.huang.rp.common.cache.dao.SysParameterMapper;
+import com.huang.rp.common.cache.domain.SysParameter;
+import com.huang.rp.common.persistence.fliter.QueryFilter;
 import com.huang.rp.common.utils.Securitys;
+import com.huang.rp.common.utils.SpringContextHolder;
 import com.huang.rp.web.blog.dao.BlogPostTermsMapper;
 import com.huang.rp.web.blog.dao.BlogPostsMapper;
 import com.huang.rp.web.blog.domain.BlogPostTerms;
+import com.huang.rp.web.blog.domain.BlogPostTermsExample;
 import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
+import com.huang.rp.web.blog.domain.TagParameter;
+import com.huang.rp.web.blog.filter.BlogPostsFilter;
 
 /**
  * 
@@ -36,22 +44,35 @@ public class BlogService {
 	BlogPostsMapper blogPostsMapper;
 	@Autowired
 	BlogPostTermsMapper blogPostTermsMapper;
+	@Autowired
+	SysParameterMapper sysParameterMapper;
 	
 	@Value("${file.server.path}")
 	String fileServerPath;
+	private BlogPostsFilter filter;
 	/**
 	 * 添加文章
 	 * @param blogPost 文章实体
 	 * @param tags 文章关联标签
 	 */
 	public void addBlogPost(BlogPostsWithBLOBs blogPost, String[] tags) {
-		blogPost.setPostAuthor(Securitys.getUserId());
-		blogPost.setPostDate(new Date());
-		blogPost.setPostDateGmt(new Date());
 		blogPost.setPostExcerpt(getPostExcerpt(blogPost));
 		blogPost.setHasCode(hasCode(blogPost));
 		blogPost.setHasPic(false);
-		blogPostsMapper.insertSelective(blogPost);
+		
+		if(blogPost.getId()==null){
+			blogPost.setPostAuthor(Securitys.getUserId());
+			blogPost.setPostDate(new Date());
+			blogPost.setPostDateGmt(new Date());
+			blogPostsMapper.insertSelective(blogPost);
+		}else{
+			blogPost.setPostModified(new Date());
+			blogPost.setPostModifiedGmt(new Date());
+			blogPostsMapper.updateByPrimaryKeySelective(blogPost);
+			BlogPostTermsExample termsExample=new BlogPostTermsExample();
+			termsExample.createCriteria().andPostIdEqualTo(blogPost.getId());
+			blogPostTermsMapper.deleteByExample(termsExample);
+		}
 		Long postId=blogPost.getId();//返回自增长的主键
 		if(tags!=null)
 		for(String tag:tags){
@@ -62,7 +83,6 @@ public class BlogService {
 			blogPostTermsMapper.insertSelective(blogPostTerm);
 		}
 	}
-	
 	
 	/**
 	 * 生成文章的摘要
@@ -95,5 +115,54 @@ public class BlogService {
 	}
 	private boolean hasCode(BlogPostsWithBLOBs blogPost){
 		return blogPost.getPostContent().contains("class=\"brush:");
+	}
+
+
+	/**
+	 * @param filter
+	 * @return
+	 */
+	public List<BlogPostsWithBLOBs> listBlogPost(BlogPostsFilter filter) {
+		List<BlogPostsWithBLOBs> postList=blogPostsMapper.selectByFilterWithBLOBs(filter);
+		return postList;
+	}
+
+
+	/**
+	 * 
+	 * @param id
+	 */
+	public BlogPostsWithBLOBs selectBlogPost(Long id) {
+		return blogPostsMapper.selectByPrimaryKey(id);
+	}
+//	@Test
+//	public void test(){
+//		String s="<pre class=\"brush:js;toolbar:false\">function(){\n\n}</pre><p><br/></p>";
+//		String b=s.replace("\n", "$");
+//		System.out.println(b);
+//	}
+
+	/**
+	 * 添加标签
+	 * @param para
+	 */
+	public void addTag(SysParameter para) {
+		para.setParaGroup(Securitys.getUserId().intValue());//标签分组
+		para.setParaCode(Constants.SYS_PARAMETER_TAGS);//参数类型
+		Integer maxCode=sysParameterMapper.getMaxCodeByParaCode(Constants.SYS_PARAMETER_TAGS);
+		para.setCode(String.valueOf(maxCode));
+		sysParameterMapper.insertSelective(para);
+		CacheUtils cacheUtils=SpringContextHolder.getBean(CacheUtils.class);
+		cacheUtils.refreshCache(Constants.CACHE_SYS_PARAMETER);
+		//CacheUtils.setCallValue(Constants.CACHE_SYS_PARAMETER, maxCode, para.getValue());//添加到缓存里面
+	}
+
+	/**
+	 * 获取
+	 * @param filter2
+	 * @return
+	 */
+	public List<TagParameter> listBlogTag(QueryFilter filter2) {
+		return sysParameterMapper.selectByFilter(filter2);
 	}
 }

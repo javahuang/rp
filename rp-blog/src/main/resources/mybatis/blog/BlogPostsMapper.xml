@@ -107,48 +107,6 @@
 	<sql id="Blob_Column_List">
 		post_content, post_title, post_excerpt, post_content_filtered
 	</sql>
-	
-	<select id="selectArticleExcerptByFilter" resultMap="ResultMapWithBLOBs"
-		parameterType="com.huang.rp.blog.access.filter.AccessFilter">
-		select
-		*
-		from blog_posts bp
-		LEFT JOIN
-		(
-		select
-		bpt.post_id,
-		GROUP_CONCAT(CONCAT(conv(oct(sp.code),8,10),':',sp.`value`)) tags
-		from blog_post_terms bpt
-		LEFT JOIN sys_parameter sp
-		on bpt.term_id=sp.code
-		<!-- 标签 paraType='T001' -->
-	 	where sp.para_code='T001'
-	 	and bpt.type=sp.para_code
-	 	GROUP BY bpt.post_id)tag
-		on bp.ID=tag.post_id
-		where 1=1
-		<if test="tagId!=null and tagId !=''">
-		and tag.post_id is not null
-		and bp.id in(select post_id from blog_post_terms where term_id=#{tagId})
-		</if>
-		<if test="tags!=null and tags !=''">
-		and tag.post_id is not null
-		and bp.id in(select post_id from blog_post_terms where term_id in (${tags}))
-		</if>
-		<if test="searchStr!=null and searchStr !=''">
-		and bp.post_content_filtered like #{searchStr}
-		</if>
-		<if test="users!=null and users !=''">
-		and bp.post_author in (${users})
-		</if>
-		<if test="sidx != null and sidx != ''">
-			order by bp.${sidx}
-			<if test="sord!=null and sord!= ''">
-				${sord}
-			</if>
-		</if>
-	</select>
-	
 	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
 		parameterType="com.huang.rp.blog.post.domain.BlogPostsExample">
 		select
@@ -611,4 +569,47 @@
 		comment_count = #{commentCount,jdbcType=BIGINT}
 		where ID = #{id,jdbcType=BIGINT}
 	</update>
+	<select id="selectArticleExcerptByFilter" resultMap="ResultMapWithBLOBs"
+		parameterType="com.huang.rp.blog.access.filter.AccessFilter">
+		select
+		*
+		from blog_posts bp
+		LEFT JOIN
+		(
+		select
+		bpt.post_id,
+		GROUP_CONCAT(CONCAT(conv(oct(sp.code),8,10),':',sp.`value`)) tags
+		from blog_post_terms bpt
+		LEFT JOIN sys_parameter sp
+		on bpt.term_id=sp.code
+		<!-- 标签 paraType='T001' -->
+	 	where sp.para_code='T001'
+	 	and bpt.type=sp.para_code
+	 	GROUP BY bpt.post_id)tag
+		on bp.ID=tag.post_id
+		where 1=1
+		<if test="tagId!=null and tagId !=''">
+		and tag.post_id is not null
+		and bp.id in(select post_id from blog_post_terms where term_id=#{tagId})
+		</if>
+		<if test="tags!=null and tags !=''">
+		and tag.post_id is not null
+		and bp.id in(select post_id from blog_post_terms where term_id in (${tags}))
+		</if>
+		<if test="searchStr!=null and searchStr !=''">
+		and bp.post_content_filtered like #{searchStr}
+		</if>
+		<if test="users!=null and users !=''">
+		and bp.post_author in (${users})
+		</if>
+		<if test="userId!=null">
+		and bp.post_author=#{userId}
+		</if>
+		<if test="sidx != null and sidx != ''">
+			order by bp.${sidx}
+			<if test="sord!=null and sord!= ''">
+				${sord}
+			</if>
+		</if>
+	</select>
 </mapper>

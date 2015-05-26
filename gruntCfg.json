@@ -1,0 +1,25 @@
+{
+  "requirejs": {
+    "main": {
+      "options": {
+        "baseUrl": "rp-blog/src/main/webapp/WEB-INF/static/grunt/",
+        "paths": {
+         "app":"src/application",
+		"jquery":"src/jquery-1.10.1.min",
+		"nicescroll":"src/jquery.nicescroll.min",
+		"cookie":"src/jquery.cookie"
+        },
+        "name":"src/require",
+        "web": {
+          "include": [
+            "app",
+            "jquery",
+            "nicescroll",
+            "cookie"
+          ],
+          "out": "dest/libs.js"
+        }
+      }
+    }
+  }
+}

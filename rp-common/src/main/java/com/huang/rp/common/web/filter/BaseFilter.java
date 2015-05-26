@@ -56,7 +56,6 @@ public class BaseFilter implements Filter {
 	FilterConfig filterConfig;
 	@Override
 	public final void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
 		this.filterConfig=filterConfig;
 		this.initConfig();
 		this.init();

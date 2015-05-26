@@ -53,9 +53,9 @@ public class AccessController {
 	public String articleIdAccess(@PathVariable("articleId")long id,HttpServletRequest request,Model model){
 		BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
 		post.setId(id);
-		post=accessService.getArticle(post);
+		post=accessService.getArticle(request,post);
 		model.addAttribute("article", post);
-		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(null);
+		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
 		model.addAttribute("postList", postList);
 		if(HttpUtils.isAjaxRequest(request))
 			return "index/article";
@@ -72,9 +72,9 @@ public class AccessController {
 	public String articlePostNameAccess(@PathVariable("postName")String postName,HttpServletRequest request,Model model){
 		BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
 		post.setPostName(postName);
-		post=accessService.getArticle(post);
+		post=accessService.getArticle(request,post);
 		model.addAttribute("article", post);
-		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(null);
+		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
 		model.addAttribute("postList", postList);
 		if(HttpUtils.isAjaxRequest(request))
 			return "index/article";
@@ -90,18 +90,9 @@ public class AccessController {
 	 */
 	@RequestMapping(value="postList")
 	public String articleExcerptListAccess(HttpServletRequest request,AccessFilter filter,Model model){
-		Cookie[]cookies=request.getCookies();
-		if(cookies!=null){
-			for(Cookie cookie:cookies){
-				if(Constants.COOKIE_NAME_SEARCH.equals(cookie.getName()))
-					filter.setSearchStr(Encodes.urlDecode(cookie.getValue()));
-				if(Constants.COOKIE_NAME_TAG.equals(cookie.getName()))
-					filter.setTagId(Encodes.urlDecode(cookie.getValue()));
-			}
-		}
 		filter.setSidx("id");//最近的文章优先显示
 		filter.setSord("desc");
-		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(filter);
+		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,filter);
 		model.addAttribute("postList", postList);
 		return "index/postlist";
 	}
@@ -123,9 +114,10 @@ public class AccessController {
 	 * @return
 	 */
 	@RequestMapping(value="timeline")
-	public ModelAndView timeline(){
+	public ModelAndView timeline(HttpServletRequest request,AccessFilter filter){
+		
 		ModelAndView mav=new ModelAndView();
-		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(null);
+		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(request,filter);
 		mav.addObject("timeline", timeline);
 		mav.setViewName("timeline");
 		return mav;
@@ -140,22 +132,11 @@ public class AccessController {
 	 */
 	@RequestMapping(value="timelineSearch")
 	public String timelineSearch(AccessFilter filter,Model model,HttpServletRequest request){
-		Cookie[]cookies=request.getCookies();
-		if(cookies!=null){
-			for(Cookie cookie:cookies){
-				if(Constants.COOKIE_NAME_SEARCH.equals(cookie.getName())){
-					filter.setHighLight(true);
-					filter.setSearchStr(Encodes.urlDecode(cookie.getValue()));
-				}
-				if(Constants.COOKIE_NAME_TAG.equals(cookie.getName()))
-					filter.setTagId(Encodes.urlDecode(cookie.getValue()));
-			}
-		}
-		//判断cookie是否有用户信息
-		SysUser user=accessService.getUserInfoByCookie(request);
-		if(user!=null)
-			filter.setUsers(String.valueOf(user.getId()));
-		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(filter);
+//		//判断cookie是否有用户信息
+//		SysUser user=accessService.getUserInfoByCookie(request);
+//		if(user!=null)
+//			filter.setUsers(String.valueOf(user.getId()));
+		Map<String,Map<String,List<BlogPostsWithBLOBs>>> timeline=accessService.getTimelineList(request,filter);
 		model.addAttribute("timeline", timeline);
 		return "timeline/posttimeline-wrapper";
 	}

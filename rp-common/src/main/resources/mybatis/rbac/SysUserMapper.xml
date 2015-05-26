@@ -295,7 +295,9 @@
 	from sys_user_role sur
 	LEFT JOIN sys_role sr
 	on sur.role_id=sr.id
+	<if test="userId!=null and userId!=''">
 	where sur.user_id=#{userId}
+	</if>
   </select>
   <!-- 获取用户角色 -->
   <select id="selectUserPermissionByid" resultType="map" parameterType="Long">
@@ -308,6 +310,8 @@
 	on sr.id=srp.role_id
 	LEFT JOIN sys_permission sp 
 	on srp.permission_id=sp.id
-  where sur.user_id=#{userId}
+	<if test="userId!=null and userId!=''">
+ 	 where sur.user_id=#{userId}
+	</if>
   </select>
 </mapper>

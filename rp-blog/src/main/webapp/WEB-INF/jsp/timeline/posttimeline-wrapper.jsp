@@ -16,10 +16,8 @@
 						<h3>
 							<i class="fa fa-calendar"></i>&nbsp;
 							<fmt:formatDate pattern="yyyy-MM-dd HH:mm"
-								value="${post.postDate }"></fmt:formatDate>
-							<a href="${ctx }/article/${post.postName}" target="_blank"
-								style="text-decoration: none !important;"><span
-								style="text-decoration: none !important;">${post.postTitle }</span></a>
+								value="${post.postDate }"></fmt:formatDate>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="${ctx }/article/${post.postName}" target="_blank" title="<rp:cache attrName="username" key="${post.postAuthor}" cacheName="userCache"/>"><span>${post.postTitle }</span></a>
 						</h3>
 						<p>${post.postExcerpt }</p>
 					</c:forEach>

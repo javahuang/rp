@@ -49,9 +49,9 @@ public class SysController extends BaseController{
 	 * @param filter
 	 * @return
 	 */
-	@RequestMapping("/cache/gridinit")
+	@RequestMapping("/cache/gridInit")
 	@ResponseBody
-	public  Pagination<CacheEntity> initgrid(CacheFilter filter){
+	public  Pagination<CacheEntity> gridInit(CacheFilter filter){
 		CacheManager cacheManager=CacheUtils.getCacheManager();
 		String[]cacheNames=cacheManager.getCacheNames();
 		List<CacheEntity>cacheList=Lists.newArrayList();

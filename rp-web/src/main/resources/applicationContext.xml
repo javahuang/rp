@@ -136,6 +136,7 @@
 	<!-- 类型转换及数据格式化 -->
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
-
+	<!-- 实现ApplicationContextAware 获得springContext -->
+	<bean class="com.huang.rp.common.utils.SpringContextHolder"></bean>
 
 </beans>

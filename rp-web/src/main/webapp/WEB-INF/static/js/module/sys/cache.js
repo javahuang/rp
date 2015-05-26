@@ -2,7 +2,7 @@ define(['jquery','jqgrid'],function($){
 	//jqgrid初始化url
 	var url=contextPath+"/sys/cache";
 	$("#jqGrid").jqGrid({
-		url : url+"/gridinit",
+		url : url+"/gridInit",
 	    datatype: "json",
 	    height: "75%",
 	    autowidth:true,

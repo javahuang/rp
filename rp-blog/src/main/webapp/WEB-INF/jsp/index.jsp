@@ -30,7 +30,7 @@
 						<%@include file="/WEB-INF/jsp/index/article.jsp"%>
 						<%@include file="/WEB-INF/jsp/index/comment.jsp"%>
 						<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="${article.id}" data-title="${article.postExcerpt}" data-url="${ctx }/article/${article.id}"></div>
+	<div class="ds-thread" data-thread-key="${article.id}" data-title="${article.postExcerpt}" data-url="http://hrps.me/article/${article.id}"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -62,36 +62,8 @@ var duoshuoQuery = {short_name:"hrps"};
 	<i class="fa fa-search"></i>
 	</span>
 	</div>
-	
-<%@include file="/WEB-INF/jsp/common/import-js.jspf"%>
+<script type="text/javascript" src="${ctx }/static/grunt/dest/libs.js">	</script>
 <script type="text/javascript">
-require.config({
-	baseUrl:'${ctx}/static',//默认是加载requirejs页面的位置
-	paths:{
-		'app':'js/application',
-		'jquery':'js/jquery-1.10.1.min',//后面不能带后缀
-		'nicescroll':'comp/nicescroll/jquery.nicescroll.min',
-		'cookie':'js/jquery.cookie',
-		'timeline':'comp/timeline/js/timeliner',
-		'tm':'js/timeline'
-	},
-	waitSeconds: 15,
-	map:{
-	    '*':{
-	         'css':'js/css',
-	         'constant':'js/constant'
-			}
-	},
-	shim : {
-		cookie:{
-			 deps: ['jquery'],
-		},
-		timeline:{
-			 deps: ['jquery'],
-		}
-        //'app': ['css! css/test.css']
-    }
-}) 
 require(['app'],function(app){
 	app.init();
 })

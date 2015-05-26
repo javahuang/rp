@@ -2,6 +2,10 @@ package com.huang.rp.web.blog.domain;
 
 import java.util.Date;
 
+import com.huang.rp.common.Constants;
+import com.huang.rp.common.cache.CacheUtils;
+import com.huang.rp.sys.rbac.domain.SysUser;
+
 public class BlogPosts {
     private Long id;
 
@@ -38,8 +42,16 @@ public class BlogPosts {
     private Boolean isReprint;
 
     private Long commentCount;
+    
+    /**
+     * 返回作者名字
+     * @return
+     */
+    public String getPostAuthorName() {
+    	return (String)CacheUtils.getCacheValueAttribute(Constants.CACHE_SYS_USER, this.postAuthor, "username",SysUser.class );
+	}
 
-    public Long getId() {
+	public Long getId() {
         return id;
     }
 
@@ -182,4 +194,6 @@ public class BlogPosts {
     public void setCommentCount(Long commentCount) {
         this.commentCount = commentCount;
     }
+    
+    
 }

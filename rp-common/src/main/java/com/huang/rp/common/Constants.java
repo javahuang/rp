@@ -16,6 +16,10 @@ public interface Constants {
 	
 	/**上下文的根*/
 	String WEB_CONTEXT="ctx";
+	/**鼻子的url*/
+	String WEB_RCL_URL="rencl";
+	/**鼻子的id号*/
+	Long WEB_RCL_USER_ID=3l;
 	
 	/*ehcache*/
 	/**用户缓存*/
@@ -27,12 +31,20 @@ public interface Constants {
 	/**标签*/
 	String SYS_PARAMETER_TAGS="T001";
 	
-	
 	/**postList分页每页显示条目*/
 	Integer POST_LIST_PAGE_SIZE=10;
 	/**cookie名*/
 	String COOKIE_NAME_SEARCH="search";
 	String COOKIE_NAME_TAG="tag";
 	String COOKIE_NAME_USER="user";
+	String COOKIE_NAME_PASSWORD="pwd";
+	
+	/*文章状态*/
+	/**已发表*/
+	String POST_STATUS_PUBLISH="publish";
+	/**中断*/
+	String POST_STATUS_INTERRUPT="interrupt";
+	/**无效*/
+	String POST_STATUS_INVALID="invalid";
 	
 }

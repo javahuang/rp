@@ -15,7 +15,7 @@
             
         </div>
         <span class="icon-chevron-right" style="display: none;"></span>
-        <div id="tabs-0" data-index="0" data-url="/es/admin/welcome"></div>
+        <div id="tabs-0" data-index="0" data-url="${ctx }/welcome"></div>
     </div>
     <shiro:guest>
     	<%@include file="/WEB-INF/jsp/login.jsp"%>
@@ -50,15 +50,16 @@
 				</h3>
 				<div class="submenu">
 					<ul>
-						<li><a href="${ctx }/blog">文章编辑</a></li>
+						<li><a href="${ctx }/blog">添加文章</a></li>
 					</ul>
 					<ul>
-						<li><a href="#">统计</a>
-							<ul>
-								<li><a href="/test2">访问量</a></li>
-							</ul></li>
+						<li><a href="${ctx }/blog/list_post">文章编辑</a></li>
+					</ul>
+					<ul>
+						<li><a href="${ctx }/blog/list_tag">标签管理</a></li>
 					</ul>
 				</div>
+				<shiro:hasRole name="admin">
 				<h3>
 					<a href="#">系统管理</a>
 				</h3>
@@ -66,7 +67,14 @@
 					<ul>
 						<li><a href="${ctx }/sys/cache">缓存管理</a></li>
 					</ul>
+					<ul>
+						<li><a href="#">统计</a>
+							<ul>
+								<li><a href="/test2">访问量</a></li>
+						</ul></li>
+					</ul>
 				</div>
+				</shiro:hasRole>
 			</div>
 				</div>
 			</div>

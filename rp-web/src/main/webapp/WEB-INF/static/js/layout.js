@@ -1,7 +1,7 @@
 /**
  * 页面布局相关
  */
-define([ 'jqlayout','j-u-b/jquery-ui','jquery' ], function(layout,jui,$) {
+define([ 'jqlayout','jquery-ui','jquery' ], function(layout,jui,$) {
 	//布局
 	var myLayout = $("body").layout({
 		west__size : 210,
@@ -313,8 +313,19 @@ define([ 'jqlayout','j-u-b/jquery-ui','jquery' ], function(layout,jui,$) {
           } else {
               hideOrShowBtn();
           }
-
-
       }
-	
+      
+      return{
+    	activeTab:activeTab,
+    	removeTab:function(index){//关闭当前tab
+    		if(index!=null){
+    			removeTab(panelId);
+    		}else{//aria-selected="true"
+    			var currPanel=$(".ui-tabs-nav").find("li[aria-selected='true']");
+    			var currIndex=currPanel.attr("aria-controls");//tabs-n
+    			currPanel.remove();
+    			removeTab(currIndex);
+    		}
+    	}
+  	}
 })

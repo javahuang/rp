@@ -545,4 +545,32 @@
       comment_count = #{commentCount,jdbcType=BIGINT}
     where ID = #{id,jdbcType=BIGINT}
   </update>
+   <select id="selectByFilterWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.huang.rp.web.blog.filter.BlogPostsFilter" >
+   select
+		*
+		from blog_posts bp
+		LEFT JOIN
+		(
+		select
+		bpt.post_id,
+		GROUP_CONCAT(CONCAT(conv(oct(sp.code),8,10),':',sp.`value`)) tags
+		from blog_post_terms bpt
+		LEFT JOIN sys_parameter sp
+		on bpt.term_id=sp.code
+		<!-- 标签 paraType='T001' -->
+	 	where sp.para_code='T001'
+	 	and bpt.type=sp.para_code
+	 	GROUP BY bpt.post_id)tag
+		on bp.ID=tag.post_id
+		where 1=1
+		<if test="userId!=null">
+		and bp.post_author in (${userId})
+		</if>
+		<if test="sidx != null and sidx != ''">
+			order by bp.${sidx}
+			<if test="sord!=null and sord!= ''">
+				${sord}
+			</if>
+		</if>
+  </select>
 </mapper>
