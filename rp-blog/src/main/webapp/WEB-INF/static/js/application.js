@@ -58,11 +58,19 @@ define(function(require,exports){
 					if(e.which==13){
 						$("#search").find("input").css("display","none");
 						var searchStr=$("#search").find("input").val();
+						//搜索字符串以$user 开头
 						if(searchStr!=null&&searchStr.trim()!=''){
-							var dateObj=new Date();
-							dateObj.setTime(dateObj.getTime()+5*60*1000);//默认将搜索内容保持五分钟
-							$.cookie("search",searchStr,{expires:dateObj,path:"/"});
-							refreshPostList();
+							if(searchStr.indexOf("$user")!=-1){//将user添加到cookie
+								var dateObj=new Date();
+								dateObj.setTime(dateObj.getTime()+30*24*60*60*1000);//保持一个月
+								$.cookie("user",searchStr,{expires:dateObj,path:"/"});
+								refreshPostList();
+							}else{
+								var dateObj=new Date();
+								dateObj.setTime(dateObj.getTime()+5*60*1000);//默认将搜索内容保持五分钟
+								$.cookie("search",searchStr,{expires:dateObj,path:"/"});
+								refreshPostList();
+							}
 						}else{
 							return;
 						}

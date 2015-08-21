@@ -1,3 +1,4 @@
+<%@ page trimDirectiveWhitespaces="true" %> 
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@include file="/WEB-INF/jsp/common/taglibs.jspf"%>
 <article id="post-6" class="post published animated fadeInUp"

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+        <title>Pusher Chat  - live demo</title>
+        <link href="css/chat-style.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+        <script src="js/jquery.pusherchat.js" type="text/javascript"></script>
+        <script src="js/jquery.playSound.js" type="text/javascript"></script>
+        
+        <style>
+            /* demo style */
+            body{color: #333;font-family:arial, verdana, sans-serif;}
+            small{color:#ccc ; font-size: 14px}
+            .account a{ color :#333; background: #eee; border: 1px solid #ccc;padding: 5px; border-radius: 5px;display: inline-block;}
+            pre{line-height: 11px;font-size: 11px;background: #fafafa;border: 1px solid #ccc; padding: 10px}
+            .hide{font-size: 19px ;color:red ; font-weight: bold;display: none}
+            .connexion {font-size: 19px ;color:green ; font-weight: bold;}
+        </style>
+    </head>
+    <body>
+    	<!-- 注册 -->
+        <!--***************************************************** pusher chat html *******************************************************-->
+        <div id="pusherChat">
+            <div id="membersContent">                
+                <span id="expand"><span class="close">&#x25BC;</span><span class="open">&#x25B2;</span></span>
+                <h2><span id="count">0</span> online</h2>
+                <div class="scroll">
+                    <div id="members-list"></div>
+                </div>
+            </div>
+
+            <!-- chat box template -->
+            <div id="templateChatBox">
+                <div class="pusherChatBox">
+                    <span class="state">
+                        <span class="pencil">
+                            <img src="assets/pencil.gif" />
+                        </span>
+                        <span class="quote">
+                            <img src="assets/quote.gif" />
+                        </span>
+                    </span>
+                    <span class="expand"><span class="close">&#x25BC;</span><span class="open">&#x25B2;</span></span>
+                    <span class="closeBox">x</span>
+                    <h2><a href="#" title="go to profile"><img src="" class="imgFriend" /></a> <span class="userName"></span></h2>
+                    <div class="slider">
+                        <div class="logMsg">
+                            <div class="msgTxt">
+                            </div>
+                        </div>
+                        <form method="post" name="#123">
+                            <textarea  name="msg" rows="3" ></textarea>
+                            <input type="hidden" name="from" class="from" />
+                            <input type="hidden" name="to"  class="to"/>
+                            <input type="hidden" name="typing"  class="typing" value="false"/>
+                             <input type="hidden" name="channelid"  class="channelid"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- chat box template end -->
+
+            <div class="chatBoxWrap">
+                <div class="chatBoxslide"></div>
+                <span id="slideLeft"> <img src="assets/quote.gif" />&#x25C0;</span> 
+                <span id="slideRight">&#x25B6; <img src="assets/quote.gif" /></span>
+            </div>
+            
+        </div>
+        <input type="hidden" id="userid"/>
+        <!--***************************************************** end pusher chat html *******************************************************-->
+
+        <hr/>
+       
+        <script type="text/javascript">
+            /*
+             * this part is only for demo you don't need this
+             
+            function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                return vars;
+            }
+
+            var id = getUrlVars()['user_id'];
+            var name = getUrlVars()['name'];
+
+            if (id=="undefined") {
+                id=""; 
+            } else $('#user_'+id).hide();
+            if (name=="undefined") name="";
+            if (!id) $('#pusherChat').remove();
+            if (name)
+                $('.connexion').html('You are connected as '+name.replace('%20',' '));
+            */
+            /*
+             * this part is only for demo you don't need this
+             */
+        </script>
+
+        <script>
+        function showWindow(id){
+            var htmregist="<div id='register' style='position:fixed; height:200px; width:400px; background:#CCC;'><em id='close' style='font-size:30px; float:right; margin-right:20px;'>×</em><h3 style='color:#FFF; text-align:center;'>注册</h3><p style='text-align:center;'><input type='text' id='username' placeholder='用户名'  /></p><p style='text-align:center;'><input type='password' id='userpass' placeholder='密码' /><em id='strength'></em></p><p id='regist' style='margin:20px auto 0 auto;height:30px;width:180px;background:#09C;color:#FFF;font-size:18px;text-align:center;line-height:30px;border-radius: 6px;cursor:pointer'>注册</p></div>";
+            var htmlogin="<div id='loginer' style='position:fixed; height:200px; width:400px; background:#CCC;'><em id='close' style='font-size:30px; float:right; margin-right:20px;'>×</em><h3 style='color:#FFF; text-align:center;'>登录</h3><p style='text-align:center;'><input type='text' id='username' placeholder='用户名'  /></p><p style='text-align:center;'><input type='password' id='userpass' placeholder='密码' /><em id='strength'></em></p><p id='login' style='margin:20px auto 0 auto;height:30px;width:180px;background:#09C;color:#FFF;font-size:18px;text-align:center;line-height:30px;border-radius: 6px;cursor:pointer'>登录</p><a id='toregist' style='float:right' href='#'>注册</a></div>";
+            if(id=='loginer')
+            	$("body").append(htmlogin);
+            else
+            	$("body").append(htmregist);
+            return false;
+            }
+
+        function removeWindow(id){
+            $("#"+id).fadeOut(function(){
+                $("#"+id).remove();
+                });
+            return false;
+            }
+        function center(id){
+            var h=$(window).height();
+            var w=$(window).width();
+            var fh=$("#"+id).height();
+            var fw=$("#"+id).width();
+            $("#"+id).css({
+                "top":(h-fh)/2,
+                "left":(w-fw)/2
+                });
+        }
+        $(window).resize(function(){
+        	center("register");
+        	center("loginer");
+        });
+	
+        showWindow('loginer');
+        center("loginer");
+        $("#close").live("click",function(){
+           // removeWindow();
+           alert("请注册！");
+        });
+        $("#toregist").live("click",function(){
+        	removeWindow("loginer");
+    		showWindow('register');
+    		center("register");
+        })
+        $("#login").live("click",function(){
+        	var name=$("#username").val(),pwd=$("#userpass").val();
+        	if(name==""||pwd==""){
+        		alert("用户名或者密码不能为空!")
+        	}else{
+        		$.post("login",{name:name,password:pwd},function(data){
+        			if(data==''){
+        				alert("登录失败");
+        				return;
+        			}
+        			alert("登录成功");
+        			$("#userid").val(data);
+        			removeWindow("loginer");
+        			$.fn.pusherChat({
+        	            'onFriendConnect': function(member){
+        	                if (member.id) $('#user_'+member.id).hide();  
+        	                if (!$('.account a:visible').html()) $('.hide').show();
+        	            },
+        	            'onFriendLogOut': function(member){
+        	                if (member.id) $('#user_'+member.id).show();  
+        	                if ($('.account a:visible').html()) $('.hide').hide();
+        	            },
+        	            'onSubscription':function(members){
+        	                if ($('.account a:visible').html()) $('.hide').hide();
+        	                $.each(members._members_map, function(val){
+        	                    $('#user_'+val).hide();
+        	                });            
+        	            }
+        	        });
+        		})
+        	}
+        })
+        $("#regist").live("click",function(){
+        	var name=$("#username").val(),pwd=$("#userpass").val();
+        	if(name==""||pwd==""){
+        		alert("用户名或者密码不能为空!")
+        	}else{
+        		//ajax的同源策略不允许发出这种请求  http://stackoverflow.com/questions/9310112/why-am-i-seeing-an-origin-is-not-allowed-by-access-control-allow-origin-error
+        		$.post("regist",{name:name,password:pwd},function(data){
+        			if(data=='fail'){
+        				alert("注册失败");
+        				return;
+        			}
+        			alert("注册成功");
+        			removeWindow("register");
+            		showWindow('loginer');
+            		center("loginer");
+        		})
+        	}
+        })
+        $(document).ready(function(){
+           
+        });
+        
+        </script>
+    </body>
+</html>

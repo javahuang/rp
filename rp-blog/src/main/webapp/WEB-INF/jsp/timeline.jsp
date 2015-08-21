@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="${ctx }/static/comp/jqcloud/jqcloud.css" type="text/css" media="screen">
 <link rel="stylesheet" href="${ctx }/static/comp/bootstrap-tagsinput/bootstrap-tagsinput.css" type="text/css" media="screen">
 </head>
-<body class="home-template  pace-done">
+<body class="home-template  pace-done bgimg">
 	<div class="pace  pace-inactive">
 		<div class="pace-activity"></div>
 	</div>

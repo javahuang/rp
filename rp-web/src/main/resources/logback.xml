@@ -68,6 +68,9 @@
 		<appender-ref ref="ACCESS" />
 	</logger>
 
+	<logger name="rp-blog-access" level="info">
+		<appender-ref ref="ACCESS" />
+	</logger>
 </configuration>
 
 

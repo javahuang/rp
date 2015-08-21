@@ -8649,3 +8649,7 @@ h2,h3 {
 #timeline input{
 	display: none;
 }
+.bgimg{
+	/*
+	background-image: url("./test.jpg");*/
+}

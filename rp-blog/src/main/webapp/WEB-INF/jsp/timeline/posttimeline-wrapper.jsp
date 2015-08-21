@@ -1,6 +1,6 @@
+<%@ page trimDirectiveWhitespaces="true" %> 
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@include file="/WEB-INF/jsp/common/taglibs.jspf"%>
-
 <c:forEach items="${timeline}" var="yyyymmline">
 	<div class="timeline-wrapper">
 		<h2 class="timeline-time">

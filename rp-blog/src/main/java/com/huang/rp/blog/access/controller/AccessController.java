@@ -8,9 +8,10 @@ package com.huang.rp.blog.access.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.access.service.AccessService;
 import com.huang.rp.blog.post.domain.BlogPostsWithBLOBs;
-import com.huang.rp.common.Constants;
 import com.huang.rp.common.cache.domain.SysParameter;
-import com.huang.rp.common.utils.Encodes;
+import com.huang.rp.common.exception.BaseException;
 import com.huang.rp.common.utils.HttpUtils;
-import com.huang.rp.sys.rbac.domain.SysUser;
 
 /**
  * 博客入口
@@ -40,6 +39,8 @@ import com.huang.rp.sys.rbac.domain.SysUser;
 @Controller
 public class AccessController {
 	
+	Logger log=LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	AccessService accessService;
 	
@@ -51,15 +52,20 @@ public class AccessController {
 	//@RequiresPermissions("")
 	@RequestMapping(value="article/{articleId:[\\d]+}")
 	public String articleIdAccess(@PathVariable("articleId")long id,HttpServletRequest request,Model model){
-		BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
-		post.setId(id);
-		post=accessService.getArticle(request,post);
-		model.addAttribute("article", post);
-		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
-		model.addAttribute("postList", postList);
-		if(HttpUtils.isAjaxRequest(request))
-			return "index/article";
-		return "index";
+		try{
+			BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
+			post.setId(id);
+			post=accessService.getArticle(request,post);
+			model.addAttribute("article", post);
+			List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
+			model.addAttribute("postList", postList);
+			if(HttpUtils.isAjaxRequest(request))
+				return "index/article";
+			return "index";
+		}catch(Exception e){
+			log.error(e.getMessage());
+			throw new BaseException(e.getMessage());
+		}
 	}
 	@Value("${connection.url}")
 	String url;
@@ -70,15 +76,21 @@ public class AccessController {
 	 */
 	@RequestMapping(value="article/{postName:\\D.+}")
 	public String articlePostNameAccess(@PathVariable("postName")String postName,HttpServletRequest request,Model model){
-		BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
-		post.setPostName(postName);
-		post=accessService.getArticle(request,post);
-		model.addAttribute("article", post);
-		List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
-		model.addAttribute("postList", postList);
-		if(HttpUtils.isAjaxRequest(request))
-			return "index/article";
-		return "index";
+		try{
+			BlogPostsWithBLOBs post=new BlogPostsWithBLOBs();
+			post.setPostName(postName);
+			post=accessService.getArticle(request,post);
+			model.addAttribute("article", post);
+			List<BlogPostsWithBLOBs> postList=accessService.getArticleExcerptListByFilter(request,null);
+			model.addAttribute("postList", postList);
+			if(HttpUtils.isAjaxRequest(request))
+				return "index/article";
+			return "index";
+		}catch(Exception e){
+			log.error(e.getMessage());
+			throw new BaseException(e.getMessage());
+		}
+		
 	}
 	/**
 	 * 通过cookie的形式传值

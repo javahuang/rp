@@ -22,7 +22,7 @@
     </shiro:guest>
     <div class="bs-example" style="z-index:999;position: absolute;  top: 0;right:40px;">
     <ul class="nav nav-pills" role="tablist">
-      <li role="presentation" class="active"><a href="#">欢迎哟,<shiro:principal property="userName"/>!</a></li>
+      <li role="presentation" class="active"><a href="#">欢迎,<shiro:principal property="userName"/>!</a></li>
       <li role="presentation" class="dropdown">
         <a id="drop4" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
           	操作

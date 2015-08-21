@@ -8,6 +8,7 @@ package com.google.guava.test;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -18,6 +19,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ClassToInstanceMap;
@@ -28,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Lists;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multiset;
@@ -71,7 +74,14 @@ public class GuavaTest {
 
 		});
 	}
-
+	@Test
+	public void splitter(){
+		List<String>strs=Lists.newArrayList(Splitter.on(",").limit(2).split("A,B,C,d"));
+		System.out.println(strs);//[A, B,C,d]
+		//忽略空字符串
+		Splitter.on(",").limit(4).omitEmptyStrings().split("A,V,,,,C,D");
+		Splitter.on(";").trimResults().withKeyValueSeparator("=").split("a=2;b=3");
+	}
 	// @Test
 	public void joiner() {
 		// 字符串拼接

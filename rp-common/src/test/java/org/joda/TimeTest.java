@@ -6,7 +6,6 @@
 package org.joda;
 
 import org.joda.time.DateTime;
-import org.junit.Test;
 
 /**
  * 
@@ -17,10 +16,15 @@ import org.junit.Test;
  */
 public class TimeTest {
 	
-	@Test
+	//@Test
 	public void test1(){
 		DateTime dt=new DateTime();
 		System.out.println(dt.getYear()+dt.getMonthOfYear());
 	}
 
+	//@Test
+	public void test2(){
+		DateTime dt=new DateTime();
+		dt.dayOfYear().withMaximumValue();//月份的最大一天
+	}
 }

@@ -1,5 +1,4 @@
 <%--缓存--%>
-<%@tag pageEncoding="UTF-8" description="缓存"%>
 <%@ tag import="com.huang.rp.common.cache.CacheUtils" %>
 <%@ attribute name="cacheName" type="java.lang.String" required="true" description="cache名字"%>
 <%@ attribute name="key" type="java.lang.Object" required="true" description="cache key"%>

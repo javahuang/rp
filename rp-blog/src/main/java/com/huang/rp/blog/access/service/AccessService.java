@@ -91,7 +91,8 @@ public class AccessService {
 		//密码不为空  且cookie post密码和文章post密码不一致 或 userid和文章id不一致将抛出异常
 		if(StringUtils.isNotBlank(post.getPostPassword())&&
 				(post.getPostPassword().equals(cookieVO.getPostPassword())||//用户输入了解锁文章密码
-						(post.getPostAuthor().equals(cookieVO.getUserId())&&StringUtils.isNotBlank(cookieVO.getUserPassword()))))//用户输入了自己的密码
+						(post.getPostAuthor().equals(cookieVO.getUserId())
+								&&StringUtils.isNotBlank(cookieVO.getUserPassword()))))//用户输入了自己的密码
 						{//作者一致 但是没有输入密码
 			return post;
 		}
@@ -120,6 +121,14 @@ public class AccessService {
 		if(filter.getRows()==null)
 			filter.setRows(Constants.POST_LIST_PAGE_SIZE);
 		List<BlogPostsWithBLOBs> excerptList=postMapper.selectArticleExcerptByFilter(filter);
+		List<BlogPostsWithBLOBs> newExcerptList=Lists.newArrayList(excerptList);
+		//过滤加密文章 输入正确用户密码才能查看加密文章
+		for(BlogPostsWithBLOBs post:excerptList){
+			if(StringUtils.isNotBlank(post.getPostPassword())&&StringUtils.isBlank(cookieVO.getUserPassword())){
+				newExcerptList.remove(post);
+			}
+		}
+		excerptList=newExcerptList;
 		if(StringUtils.isNotBlank(filter.getSearchStr())&&filter.isHighLight()){
 			///高亮显示搜索后的结果
 			doSearchAfter(excerptList,searchs);

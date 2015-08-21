@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 				    },
 				  },
 				},
-			requirejs:{//rcfg
+			requirejs:{//
 				compile: {
 			        options: {
 			          baseUrl: 'rp-blog/src/main/webapp/WEB-INF/static/grunt',
@@ -92,6 +92,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-requirejs');
 	//为了介绍自定义任务搞了一个这个
 	grunt.registerTask('build', 'require', function () {
+	//去除页面多余的css
+	grunt.loadNpmTasks('grunt-uncss');
 	    //任务列表
 	    var tasks = ['requirejs'];
 	    

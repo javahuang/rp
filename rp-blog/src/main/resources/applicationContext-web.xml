@@ -7,5 +7,5 @@
   	<import resource="security/applicationContext-shiro.xml" />
 	<import resource="task/applicationContext-task.xml" />
 	<import resource="cache/applicationContext-ehcache.xml" />
-	
+	<import resource="preview/applicationContext-preview.xml" />
 </beans>

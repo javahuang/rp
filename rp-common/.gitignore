@@ -4,3 +4,4 @@
 .pom
 .settings/
 target/
+src/test/

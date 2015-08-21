@@ -1,5 +1,8 @@
 /**
  * 页面布局相关
+ * 今天突然要是有iframe,发现以前写的代码时间长了事后还是容易遗忘
+ * 新建iframe主要是利用jQuery的深度复制我实现定义的myLayout里面的布局中center的iframe,然后
+ * myLayout.panes.center = iframe; 将center中的iframe替换
  */
 define([ 'jqlayout','jquery-ui','jquery' ], function(layout,jui,$) {
 	//布局

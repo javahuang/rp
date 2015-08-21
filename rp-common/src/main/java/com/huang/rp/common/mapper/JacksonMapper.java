@@ -5,11 +5,14 @@
  */
 package com.huang.rp.common.mapper;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -31,6 +34,7 @@ public class JacksonMapper {
 	public JacksonMapper(Include include){
 		mapper=new ObjectMapper();
 		mapper.setSerializationInclusion(include);
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);//反序列化字符串中未知的key不会报错
 	}
 	
 	public static JacksonMapper nonDefaultJacksonMapper(){
@@ -52,5 +56,15 @@ public class JacksonMapper {
 		}
 	}
 	
+	public static<T> T readValue(String content, Class<T> valueType){
+		JacksonMapper jsonMapper=new JacksonMapper();
+		try {
+			return jsonMapper.mapper.readValue(content, valueType);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

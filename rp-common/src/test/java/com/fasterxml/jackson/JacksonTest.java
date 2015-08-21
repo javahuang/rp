@@ -17,8 +17,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -180,6 +182,25 @@ public class JacksonTest {
 		//Method for setting defalt POJO property inclusion strategy for serialization.
 		mapper.setSerializationInclusion(Include.NON_EMPTY);
 		//mapper.setBase64Variant(v)
+	}
+	
+	public void test6(){
+		 ObjectMapper objectMapper = new ObjectMapper();
+		 MyValue loginRes = null;
+		 String loginresp=null;
+         try {
+            objectMapper
+                  .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);//序列化字符串中未知的key不会报错
+            // objectMapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
+            // objectMapper.disable(SerializationFeature.)
+            loginRes = objectMapper.readValue(loginresp, MyValue.class);
+         } catch (JsonParseException e2) {
+            e2.printStackTrace();
+         } catch (JsonMappingException e2) {
+            e2.printStackTrace();
+         } catch (IOException e2) {
+            e2.printStackTrace();
+         }
 	}
 
 }

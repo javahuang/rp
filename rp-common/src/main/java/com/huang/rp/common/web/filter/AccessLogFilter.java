@@ -34,7 +34,7 @@ public class AccessLogFilter extends BaseFilter{
 	}
 
 	public void doFilter(HttpServletRequest httpRequest,HttpServletResponse httpResponse,FilterChain chain) throws IOException, ServletException{
-		LogUtils.logAccess(httpRequest);
-		chain.doFilter(httpRequest, httpResponse);
+		if(LogUtils.logAccess(httpRequest))
+			chain.doFilter(httpRequest, httpResponse);
 	}
 }

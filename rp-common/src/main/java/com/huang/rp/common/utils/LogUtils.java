@@ -27,12 +27,16 @@ public class LogUtils {
      *
      * @param request
      */
-    public static void logAccess(HttpServletRequest request) {
+    public static boolean logAccess(HttpServletRequest request) {
         String username = getUsername();
         String jsessionId = request.getRequestedSessionId();
         String ip = IpUtils.getIpAddr(request);
         String accept = request.getHeader("accept");
         String userAgent = request.getHeader("User-Agent");
+        //禁止百度访问
+        if(StringUtils.isNotBlank(userAgent)&&userAgent.toUpperCase().contains("BAIDU")){
+        	return false;
+        }
         String url = request.getRequestURI();
         String params = getParams(request);
         String headers = getHeaders(request);
@@ -48,6 +52,7 @@ public class LogUtils {
         s.append(getBlock(headers));
         s.append(getBlock(request.getHeader("Referer")));
         getAccessLog().info(s.toString());
+        return true;
     }
 
     /**

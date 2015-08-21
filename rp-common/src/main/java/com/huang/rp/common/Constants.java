@@ -30,6 +30,8 @@ public interface Constants {
 	/*系统参数*/
 	/**标签*/
 	String SYS_PARAMETER_TAGS="T001";
+	/**每日一记*/
+	String SYS_PARAMETER_VALUE_DAILY_WRITE="9";
 	
 	/**postList分页每页显示条目*/
 	Integer POST_LIST_PAGE_SIZE=10;

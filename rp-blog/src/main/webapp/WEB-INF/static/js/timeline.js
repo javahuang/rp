@@ -93,7 +93,7 @@ define(function(require,exports){
 							if(searchStr.indexOf("$user")!=-1){//将user添加到cookie
 								var dateObj=new Date();
 								dateObj.setTime(dateObj.getTime());
-								dateObj.setTime(dateObj.getTime()+30*24*60*1000);//默认将搜索内容保持一个月
+								dateObj.setTime(dateObj.getTime()+30*24*60*60*1000);//默认将搜索内容保持一个月
 								$.cookie("user",searchStr,{expires:dateObj,path:"/"});
 								initJqcloud();//初始化标签云
 							}else if(searchStr.indexOf("$password")!=-1){//查看密码对应的文章
