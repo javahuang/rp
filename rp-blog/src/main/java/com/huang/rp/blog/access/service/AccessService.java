@@ -16,6 +16,14 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import com.huang.rp.blog.post.dao.BlogAccessLogMapper;
+import com.huang.rp.blog.post.domain.*;
+import com.huang.rp.blog.tools.dao.BlogToolsMapper;
+import com.huang.rp.blog.tools.domain.BlogTools;
+import com.huang.rp.blog.tools.domain.BlogToolsExample;
+import com.huang.rp.blog.tools.domain.BlogToolsVO;
+import com.huang.rp.common.utils.IpUtils;
+import com.huang.rp.common.utils.SpringContextHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +37,6 @@ import com.google.common.collect.Maps;
 import com.huang.rp.blog.access.domain.CookieVO;
 import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.post.dao.BlogPostsMapper;
-import com.huang.rp.blog.post.domain.BlogPostsExample;
-import com.huang.rp.blog.post.domain.BlogPostsWithBLOBs;
 import com.huang.rp.common.Constants;
 import com.huang.rp.common.cache.dao.SysParameterMapper;
 import com.huang.rp.common.cache.domain.SysParameter;
@@ -59,6 +65,10 @@ public class AccessService {
 	SysParameterMapper sysParameterMapper;
 	@Autowired
 	SysUserMapper sysUserMapper;
+	@Autowired
+	BlogToolsMapper toolsMapper;
+	@Autowired
+	BlogAccessLogMapper blogAccessLogMapper;
 	
 	/**
 	 * 获取文章
@@ -450,6 +460,112 @@ public class AccessService {
 		}
 		return cookieVO;
 	}
-	
-	
+
+	/**
+	 * 首页获取文章列表
+	 * @param request
+	 * @param filter
+	 * @return
+	 */
+	public List<BlogPostsWithBLOBs> getArticleList(HttpServletRequest request, AccessFilter filter) {
+		if(filter==null)
+			filter=new AccessFilter();
+		filter.setSord("desc");
+		filter.setSidx("id");
+		CookieVO cookieVO=parseCookie(request);
+		filter.setSearchStr(cookieVO.getSearch());
+		filter.setTagId(cookieVO.getTag());
+		filter.setUserId(cookieVO.getUserId());
+		filter.setHighLight(true);
+		List<BlogPostsWithBLOBs> articleList=getArticleExcerptListByFilter(request,filter);
+		return articleList;
+	}
+
+	/**
+	 * 获取博客首页工具列表
+	 * @return
+     */
+	public List<BlogToolsVO> getBlogTools(){
+		BlogToolsExample exp=new BlogToolsExample();
+		exp.createCriteria().andIsValidEqualTo(true);
+		exp.setOrderByClause("type,sequence");
+		List<BlogToolsVO> tools=toolsMapper.selectByExample(exp);
+		List<BlogToolsVO>level0Tools=Lists.newArrayList();
+		List<BlogToolsVO>level1Tools=Lists.newArrayList();
+		List<BlogToolsVO>level2Tools=Lists.newArrayList();
+		List<BlogToolsVO>level3Tools=Lists.newArrayList();
+		for(BlogToolsVO tool:tools){
+			if(tool.getType()==0){
+				level0Tools.add(tool);
+			}else if(tool.getType()==1){
+				level1Tools.add(tool);
+			}else if(tool.getType()==2){
+				level2Tools.add(tool);
+			}else if(tool.getType()==3){
+				level3Tools.add(tool);
+			}
+		}
+		addSubTools(level2Tools,level3Tools);
+		addSubTools(level1Tools,level2Tools);
+		addSubTools(level0Tools,level1Tools);
+		return level0Tools;
+	}
+
+	private void addSubTools(List<BlogToolsVO> parentTools,List<BlogToolsVO> subTools){
+		for(BlogToolsVO tool:subTools){//添加一级菜单到0级
+			for(BlogToolsVO tool0:parentTools){
+				if(tool.getParentId()==tool0.getId()){
+					List<BlogToolsVO> tool0s=tool0.getSubTools();
+					if(tool0s==null){
+						tool0s=Lists.newArrayList();
+						tool0.setSubTools(tool0s);
+					}
+					tool0.getSubTools().add(tool);
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * 记录每次访问博客的信息,并更新文章访问次数
+	 * @param request
+     */
+	public synchronized  void updateBlogPostReadCount(HttpServletRequest request){
+		String url = request.getRequestURI();///blog/article/daily-writing-151222
+		String articleName=StringUtils.substringAfterLast(url,"/");
+		//只记录文章访问量
+		if(StringUtils.isBlank(url)||!StringUtils.contains(url,"article")){
+			return;
+		}
+		//不记录谷歌机器人
+		String agent=request.getHeader("User-Agent");
+		if(StringUtils.isNotBlank(agent)&&agent.contains("bot")){
+			return;
+		}
+		String ip = IpUtils.getIpAddr(request);
+		BlogAccessLogExample exp=new BlogAccessLogExample();
+		exp.createCriteria().andUrlEqualTo(articleName).andIpEqualTo(ip);
+		List<BlogAccessLog> blogAccessLogs=blogAccessLogMapper.selectByExample(exp);
+		if(blogAccessLogs.size()==0){//该ip未访问过,增加文章访问次数
+			BlogPostsExample postExp=new BlogPostsExample();
+			postExp.createCriteria().andPostNameEqualTo(articleName);
+			List<BlogPosts> blogPostsList=postMapper.selectByExample(postExp);
+			if(blogPostsList.size()==1){
+				BlogPosts currPost=blogPostsList.get(0);
+				BlogPostsWithBLOBs currPostWithBlob=new BlogPostsWithBLOBs();
+				currPostWithBlob.setId(currPost.getId());
+				currPostWithBlob.setReadCount(currPost.getReadCount()+1);
+				postMapper.updateByPrimaryKeySelective(currPostWithBlob);
+			}
+		}
+		BlogAccessLog blogAccessLog=new BlogAccessLog();
+		blogAccessLog.setCreateTime(new Date());
+		blogAccessLog.setIp(ip);
+		blogAccessLog.setUrl(articleName);
+		blogAccessLog.setReferer(request.getHeader("Referer"));
+		blogAccessLog.setUserAgent(agent);
+		blogAccessLogMapper.insertSelective(blogAccessLog);
+	}
+
 }

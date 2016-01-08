@@ -4,10 +4,9 @@ import com.huang.rp.blog.access.filter.AccessFilter;
 import com.huang.rp.blog.post.domain.BlogPosts;
 import com.huang.rp.blog.post.domain.BlogPostsExample;
 import com.huang.rp.blog.post.domain.BlogPostsWithBLOBs;
-import com.huang.rp.common.persistence.MyBatisRepository;
-
 import java.util.List;
 
+import com.huang.rp.common.persistence.MyBatisRepository;
 import org.apache.ibatis.annotations.Param;
 
 @MyBatisRepository
@@ -40,9 +39,9 @@ public interface BlogPostsMapper {
 
     int updateByPrimaryKey(BlogPosts record);
 
-	/**
-	 * @param filter
-	 * @return
-	 */
-	List<BlogPostsWithBLOBs> selectArticleExcerptByFilter(AccessFilter filter);
+    /**
+     * @param filter
+     * @return
+     */
+    List<BlogPostsWithBLOBs> selectArticleExcerptByFilter(AccessFilter filter);
 }

@@ -50,8 +50,10 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
-	<mvc:view-controller path="/" view-name="redirect:/timeline"/>
-
+	<!-- 不配置默认执行AccessController的默认RequestMapping -->
+	<!--  
+	<mvc:view-controller path="/" view-name="redirect:/timeline"/>  
+	-->
 	<!-- 当在web.xml 中 DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
 	<mvc:default-servlet-handler />
 

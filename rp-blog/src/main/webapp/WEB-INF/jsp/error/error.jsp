@@ -1,4 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isErrorPage="true"%>
+<%@ page import="java.io.*" %>
+<%@ page import="org.slf4j.*" %>
+<%
+Logger log=LoggerFactory.getLogger("ERROR");
+log.error(exception.getMessage());
+exception.printStackTrace();
+%>
 <html>   
   <head>   
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>   

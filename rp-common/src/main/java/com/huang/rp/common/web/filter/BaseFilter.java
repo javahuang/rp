@@ -19,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.AntPathMatcher;
@@ -112,7 +113,9 @@ public class BaseFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		String currUrl = httpRequest.getServletPath();
-		httpRequest.setAttribute("ctx", httpRequest.getContextPath());
+		String ctx=httpRequest.getContextPath();
+		ctx=StringUtils.substringBeforeLast(ctx, "?");
+		httpRequest.setAttribute("ctx", ctx);
 		logger.info("url filter:currenu url:[{}]",currUrl);
 		if (isBlackURL(currUrl)) {
             chain.doFilter(request, response);
@@ -141,7 +144,6 @@ public class BaseFilter implements Filter {
 	@Override
 	public  void destroy() {
 		// TODO Auto-generated method stub
-
 	}
 
 	private boolean isWhiteURL(String currentURL) {

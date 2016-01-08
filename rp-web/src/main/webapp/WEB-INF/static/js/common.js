@@ -69,10 +69,6 @@ var hhmmFormatter = function(cellvalue, options, rowObject) {
 };
 
 
-
-
-
-
 /**DateFormat*/
 DateFormat = (function(){   
 	

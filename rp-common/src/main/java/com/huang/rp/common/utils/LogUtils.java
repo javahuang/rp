@@ -1,20 +1,18 @@
 package com.huang.rp.common.utils;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.huang.rp.common.mapper.JacksonMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.huang.rp.common.mapper.JacksonMapper;
 
 public class LogUtils {
 

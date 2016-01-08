@@ -67,7 +67,6 @@ define(function(require,exports){
 		elt.on('itemRemoved', function(event) {//删除事件
 			refreshTimeline();
 			});
-		
 	}
 	
 		// Scroll to top animation on click

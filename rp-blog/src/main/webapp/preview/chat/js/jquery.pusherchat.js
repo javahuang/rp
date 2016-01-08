@@ -14,7 +14,8 @@
     $.fn.pusherChat = function(options ) {
         //options
         var settings = $.extend( {
-        	'url':'ws://hrps.me:10086/websocket',//默认的WebSocket的url
+        	//'url':'ws://hrps.me:10086/websocket',//默认的WebSocket的url
+        	'url':'ws://localhost:10086/websocket',//默认的WebSocket的url
             'serverPath' : null, // required : path to server
             'onFriendConnect' : undefined, // event : trigger whene friend connect & return his ID
             'onFriendLogOut' : undefined, // event : trigger whene friend log out & return his ID
@@ -78,7 +79,6 @@
         }
         //收到消息	
         function msgReceive(data){
-        	 console.dir(data)
         	 var obj = $('a[href=#'+data.from+']');
         	 //<a href="#244" class="on"><img src="assets/cobain.jpg"> <span>Kurt Cobain</span></a>
              createChatBox(obj);
@@ -109,7 +109,6 @@
             }
         });  
         function msgSent(msg){
-        	console.log(msg)
         	if (socket.readyState == WebSocket.OPEN) {
         	    socket.send(msg);
         	} else {

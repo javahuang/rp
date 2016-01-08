@@ -5,9 +5,14 @@
  */
 package com.huang.rp.web.blog.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.huang.rp.web.blog.dao.BlogToolsMapper;
+import com.huang.rp.web.blog.domain.*;
+import com.huang.rp.web.blog.filter.ToolsFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +28,6 @@ import com.huang.rp.common.utils.Securitys;
 import com.huang.rp.common.utils.SpringContextHolder;
 import com.huang.rp.web.blog.dao.BlogPostTermsMapper;
 import com.huang.rp.web.blog.dao.BlogPostsMapper;
-import com.huang.rp.web.blog.domain.BlogPostTerms;
-import com.huang.rp.web.blog.domain.BlogPostTermsExample;
-import com.huang.rp.web.blog.domain.BlogPostsWithBLOBs;
-import com.huang.rp.web.blog.domain.TagParameter;
 import com.huang.rp.web.blog.filter.BlogPostsFilter;
 
 /**
@@ -46,6 +47,8 @@ public class BlogService {
 	BlogPostTermsMapper blogPostTermsMapper;
 	@Autowired
 	SysParameterMapper sysParameterMapper;
+	@Autowired
+	BlogToolsMapper blogToolsMapper;
 	
 	@Value("${file.server.path}")
 	String fileServerPath;
@@ -164,5 +167,49 @@ public class BlogService {
 	 */
 	public List<TagParameter> listBlogTag(QueryFilter filter2) {
 		return sysParameterMapper.selectByFilter(filter2);
+	}
+
+	/**
+	 * 获取所有的工具
+	 * @return
+     */
+	public List<BlogTools> getAllTools() {
+		BlogToolsExample exp=new BlogToolsExample();
+		exp.createCriteria().andIsValidEqualTo(true);
+		exp.setOrderByClause("type,sequence");
+		return blogToolsMapper.selectByExample(exp);
+	}
+
+	public List<BlogTools> listBlogToolsByParentId(ToolsFilter filter) {
+		BlogToolsExample exp=new BlogToolsExample();
+		if(filter.getParentId()==null){
+			return new ArrayList<BlogTools>();
+		}
+		exp.createCriteria().andIsValidEqualTo(true).andParentIdEqualTo(filter.getParentId());
+		exp.setOrderByClause("sequence");
+		return blogToolsMapper.selectByExample(exp);
+	}
+
+	public Integer getSequence(String parentId){
+		BlogToolsExample exp=new BlogToolsExample();
+		exp.createCriteria().andParentIdEqualTo(Integer.parseInt(parentId));
+		return blogToolsMapper.countByExample(exp);
+	}
+
+	public void addTool(BlogTools tool) {
+		blogToolsMapper.insertSelective(tool);
+	}
+
+	public void updateToolsOrder(String orderParam) {
+		if(StringUtils.isNotBlank(orderParam)){
+			String[] params=orderParam.split(";");
+			for(String param:params){
+				String[] idSequence=param.split(":");
+				BlogTools tool=new BlogTools();
+				tool.setId(Integer.parseInt(idSequence[0]));
+				tool.setSequence(Byte.parseByte(idSequence[1]));
+				blogToolsMapper.updateByPrimaryKeySelective(tool);
+			}
+		}
 	}
 }

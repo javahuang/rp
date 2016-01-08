@@ -39,6 +39,8 @@ public class BlogPosts {
 
     private Long commentCount;
 
+    private Long readCount;
+
     public Long getId() {
         return id;
     }
@@ -181,5 +183,13 @@ public class BlogPosts {
 
     public void setCommentCount(Long commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public Long getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(Long readCount) {
+        this.readCount = readCount;
     }
 }

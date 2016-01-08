@@ -58,6 +58,9 @@
 					<ul>
 						<li><a href="${ctx }/blog/list_tag">标签管理</a></li>
 					</ul>
+					<ul>
+						<li><a href="${ctx }/blog/list_tools">工具库管理</a></li>
+					</ul>
 				</div>
 				<shiro:hasRole name="admin">
 				<h3>

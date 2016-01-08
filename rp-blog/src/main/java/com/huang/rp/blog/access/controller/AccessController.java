@@ -43,7 +43,19 @@ public class AccessController {
 	
 	@Autowired
 	AccessService accessService;
-	
+	/**
+	 * 入口页面
+	 * @param request
+	 * @param filter
+	 * @return
+	 */
+	@RequestMapping("/")
+	public String index(HttpServletRequest request,AccessFilter filter,Model model){
+		List<BlogPostsWithBLOBs> articleList=accessService.getArticleList(request,filter);
+		model.addAttribute("articleList", articleList);
+		model.addAttribute("filter", filter);
+		return "homepage";
+	}
 	/**
 	 * method=RequestMethod.GET
 	 * 控制器的入口,采用两种方式
@@ -72,7 +84,7 @@ public class AccessController {
 	
 	/**
 	 * 2.文章的postName
-	 * @return
+	 * @return 文章内容
 	 */
 	@RequestMapping(value="article/{postName:\\D.+}")
 	public String articlePostNameAccess(@PathVariable("postName")String postName,HttpServletRequest request,Model model){
@@ -90,7 +102,6 @@ public class AccessController {
 			log.error(e.getMessage());
 			throw new BaseException(e.getMessage());
 		}
-		
 	}
 	/**
 	 * 通过cookie的形式传值
@@ -112,8 +123,6 @@ public class AccessController {
 	/**
 	 * 实时同步多说的评论
 	 * @param request
-	 * @param filter
-	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value="comment")
@@ -161,4 +170,5 @@ public class AccessController {
 	public List<SysParameter>tagCloudInit(HttpServletRequest request){
 		return accessService.getTagCloud(request);
 	}
+
 }

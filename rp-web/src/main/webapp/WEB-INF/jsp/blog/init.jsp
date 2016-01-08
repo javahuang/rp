@@ -25,7 +25,7 @@
 <div id="edit-title" class="form-group form-inline ">
     <label for="postTitle"><b>标题:</b></label>
     <input type="text" class="form-control input-lg" id="postTitle" name="postTitle" placeholder="输入标题" value="${post.postTitle}">
-    <label for="title"><b>副标题:</b></label>
+    <label for="postName"><b>副标题:</b></label>
     <input type="text" class="form-control input-lg" id="postName" name="postName" placeholder="输入副标题(文章链接 字母/数字/横线)" value="${post.postName }">
     <input type="hidden" value="${post.id }" name="id" id="postId">
 </div>

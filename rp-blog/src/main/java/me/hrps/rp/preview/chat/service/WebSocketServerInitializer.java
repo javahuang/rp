@@ -15,8 +15,14 @@
  */
 package me.hrps.rp.preview.chat.service;
 
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Maps;
+import com.huang.rp.common.utils.SpringContextHolder;
+
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -24,29 +30,20 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.ssl.SslContext;
-
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import me.hrps.rp.preview.chat.domain.MetaData;
-
-import com.google.common.collect.Maps;
-import com.huang.rp.common.utils.SpringContextHolder;
 
 /**
  * 都是单例
  * 这个ChannelHandlerAdapter是总的adapter
  * pipeline里面的adapter是每个channel独立的adapter
  */
-@Service
+@Service("charService")
 public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel> {
 	public static Map<String,Channel>chs=Maps.newConcurrentMap();
 	public static Map<String,MetaData>mds=Maps.newConcurrentMap();
 
     public WebSocketServerInitializer() {
+    	
     }
 
     @Override
@@ -57,7 +54,7 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast(new WebSocketServerCompressionHandler());
-        pipeline.addLast((WebSocketServerHandler)SpringContextHolder.getBean("webSocketServerHandler"));
+        pipeline.addLast((WebSocketServerHandler)SpringContextHolder.getBean("chatHandler"));
         verifyChannel(ch);
     }
     /**

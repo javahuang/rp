@@ -42,6 +42,22 @@
 			</pattern>
 		</encoder>
 	</appender>
+	
+	<!-- websocket消息 -->
+	<appender name="WS"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 按天回滚 daily -->
+			<fileNamePattern>${log.dir}/rp-ws-%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- 日志最大的历史 60天 -->
+			<maxHistory>60</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
 
 	<root level="info">
 	<appender-ref ref="STDOUT"></appender-ref>

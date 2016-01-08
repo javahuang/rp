@@ -22,7 +22,9 @@
 			'jqgridlocale':'comp/jqgrid/4.5.4/js/i18n/grid.locale-cn',
 			'jqgrid':'comp/jqgrid/4.5.4/js/jquery.jqGrid.min',
 			'jquery-avgrund':'comp/jquery-avgrund/jquery.avgrund',
-			'common':'js/common'
+			'common':'js/common',
+			'ztree':'comp/zTree/3.5.15/js/jquery.ztree.all-3.5.min',
+			'jquery-form':'comp/jquery/js/jquery.form'
 		},
 		waitSeconds : 15,
 		map : {
@@ -47,7 +49,13 @@
 		    },
 		    "jqgridlocale":{
 		        deps:['jquery-ui']
-		    }
+		    },
+			"ztree":{
+				deps:['jquery']
+			},
+			"jquery-form":{
+				deps:['jquery']
+			}
 		//'app': ['css! css/test.css']
 		}
 	})

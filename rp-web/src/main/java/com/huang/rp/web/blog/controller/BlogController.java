@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.huang.rp.web.blog.domain.BlogTools;
+import com.huang.rp.web.blog.filter.ToolsFilter;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -113,7 +115,6 @@ public class BlogController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value="edit")
-	@ResponseBody
 	public ResponseEntity<?> editBlogPost(BlogPostsWithBLOBs blogPost,HttpServletRequest request,HttpServletResponse response){
 		Map<String,String> state=Maps.newHashMap();
 		String[]tags=request.getParameterValues("tags");
@@ -187,5 +188,53 @@ public class BlogController extends BaseController {
 			e.printStackTrace();
 			return "添加失败";
 		}
+	}
+
+	/**
+	 * @return zTree使用
+     */
+	@RequestMapping(value="getAllTools")
+	@ResponseBody
+	public List<BlogTools>getAllTools(){
+		return blogService.getAllTools();
+	}
+
+	@RequestMapping(value="getToolsByParentId")
+	@ResponseBody
+	public Pagination<BlogTools> tagGridinit(ToolsFilter filter) {
+		List<BlogTools> cacheList = blogService.listBlogToolsByParentId(filter);
+		Pagination<BlogTools> response = PaginationContext.getPagination();
+		response.setRows(cacheList);
+		return response;
+	}
+	@RequestMapping(value="getSequence")
+	@ResponseBody
+	public Integer getSequence(String parentId){
+		return blogService.getSequence(parentId);
+	}
+	@RequestMapping(value="addTool")
+	@ResponseBody
+	public Boolean addTool(BlogTools tool){
+		try{
+			blogService.addTool(tool);
+			return true;
+		}catch(Exception  e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	@RequestMapping(value="updateToolsOrder")
+	public ResponseEntity<?> updateToolsOrder(HttpServletRequest request){
+		Map<String,Object> state=Maps.newHashMap();
+		String orderParam=request.getParameter("toolsOrderParam");
+		try{
+			blogService.updateToolsOrder(orderParam);
+			state.put("success",true);
+		}catch(Exception e){
+			state.put("success",false);
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String,Object>>(state, HttpStatus.OK);
+
 	}
 }

@@ -1244,6 +1244,66 @@ public class BlogPostsExample {
             addCriterion("comment_count not between", value1, value2, "commentCount");
             return (Criteria) this;
         }
+
+        public Criteria andReadCountIsNull() {
+            addCriterion("read_count is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountIsNotNull() {
+            addCriterion("read_count is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountEqualTo(Long value) {
+            addCriterion("read_count =", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountNotEqualTo(Long value) {
+            addCriterion("read_count <>", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountGreaterThan(Long value) {
+            addCriterion("read_count >", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountGreaterThanOrEqualTo(Long value) {
+            addCriterion("read_count >=", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountLessThan(Long value) {
+            addCriterion("read_count <", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountLessThanOrEqualTo(Long value) {
+            addCriterion("read_count <=", value, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountIn(List<Long> values) {
+            addCriterion("read_count in", values, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountNotIn(List<Long> values) {
+            addCriterion("read_count not in", values, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountBetween(Long value1, Long value2) {
+            addCriterion("read_count between", value1, value2, "readCount");
+            return (Criteria) this;
+        }
+
+        public Criteria andReadCountNotBetween(Long value1, Long value2) {
+            addCriterion("read_count not between", value1, value2, "readCount");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

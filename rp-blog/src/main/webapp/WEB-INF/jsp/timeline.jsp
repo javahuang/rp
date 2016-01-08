@@ -7,8 +7,12 @@
 </head>
 <body class="home-template  pace-done bgimg">
 	<div class="pace  pace-inactive">
+		<div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);width:0%">
+  			<div class="pace-progress-inner"></div>
+		</div>
 		<div class="pace-activity"></div>
 	</div>
+	<script type="text/javascript">showOrHideProgress(100)</script>
 	<div class="container-fluid">
 		<div class="row">
 			<div id="m-nav" class="col-xs-12 col-sm-4 col-md-4 col-lg-4 affix">

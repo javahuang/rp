@@ -22,6 +22,18 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>java3d</groupId>
+			<artifactId>vecmath</artifactId>
+			<version>1.3.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>java3d</groupId>
+			<artifactId>j3d-core-utils</artifactId>
+			<version>1.3.1</version>
+			<scope>test</scope>
+		</dependency>
 		<!-- spring相关jar包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -195,9 +207,13 @@
 			<artifactId>shiro-core</artifactId>
 		</dependency>
 		<dependency>
-	<groupId>org.apache.lucene</groupId>
-	<artifactId>lucene-core</artifactId>
-	<version>5.1.0</version>
-</dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.0.29.Final</version>
+		</dependency>
 	</dependencies>
 </project>

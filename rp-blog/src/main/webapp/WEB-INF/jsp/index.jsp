@@ -3,8 +3,12 @@
 </head>
 <body class="home-template  pace-done">
 	<div class="pace  pace-inactive">
+		<div class="pace-progress" data-progress-text="100%" data-progress="99" style="transform: translate3d(100%, 0px, 0px);width:0%">
+  			<div class="pace-progress-inner"></div>
+		</div>
 		<div class="pace-activity"></div>
 	</div>
+	<script type="text/javascript">showOrHideProgress(100)</script>
 	<div class="container-fluid">
 		<div class="row">
 			<div id="m-nav" class="col-xs-12 col-sm-4 col-md-4 col-lg-4 affix">
@@ -20,7 +24,7 @@
 					<rp:page page="1" />
 					</div>
 				</div>
-				
+
 			</div>
 			<div id="m-post"
 				class="col-xs-12 col-sm-8 col-sm-offset-4 col-md-8 col-md-offset-4 col-lg-8 col-lg-offset-4">
@@ -30,7 +34,9 @@
 						<%@include file="/WEB-INF/jsp/index/article.jsp"%>
 						<%@include file="/WEB-INF/jsp/index/comment.jsp"%>
 						<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="${article.id}" data-title="${article.postExcerpt}" data-url="http://hrps.me/article/${article.id}"></div>
+	<div id="comment">					
+	<div class="ds-thread" id="comment" data-thread-key="${article.id}" data-title="1${article.postExcerpt}" data-url="http://hrps.me/article/${article.id}"></div>
+	</div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

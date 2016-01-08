@@ -102,7 +102,6 @@
           custom_class = word.html["class"];
           delete word.html["class"];
         }
-        console.log(word.weight - word_array[word_array.length - 1].weight);
         // Check if min(weight) > max(weight) otherwise use default
         if (word_array[0].weight > word_array[word_array.length - 1].weight) {
           // Linearly map the original weight to a discrete scale from 1 to 10

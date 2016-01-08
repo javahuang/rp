@@ -70,7 +70,7 @@ import com.huang.rp.common.utils.ReflectionUtils;
 /**
  * Handles handshakes and messages
  */
-@Service
+@Service("chatHandler")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class WebSocketServerHandler extends SimpleChannelInboundHandler<Object> {
 	@Autowired

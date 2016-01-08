@@ -57,7 +57,7 @@
 	<!-- 记录访问日志 -->
 	<filter>
 		<filter-name>AccessLogFilter</filter-name>
-		<filter-class>com.huang.rp.common.web.filter.AccessLogFilter</filter-class>
+		<filter-class>com.huang.rp.common.web.filter.BlogAccessLogFilter</filter-class>
 		<async-supported>true</async-supported>
 		<init-param>
 			<param-name>blackListURL</param-name>

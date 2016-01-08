@@ -115,6 +115,7 @@ define(function(require,exports){
 		$("#m-post-list").niceScroll({cursorborder:"1px solid #fff",cursorcolor:"#333"});//cursorfixedheight:'70px'
 		//滚动条滚动事件
 		$("#m-post-list").scroll(function(e){
+			debugger;
 			var scrollHeight=this.scrollHeight,scrollTop=this.scrollTop,offsetHeight=this.offsetHeight;
 			if(scrollHeight-offsetHeight-scrollTop==0){
 				$(".pagination .page-number").fadeOut("slow",function(){
